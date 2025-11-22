@@ -72,7 +72,7 @@ function getBadge(commits) {
     } else if (commits >= 10) {
         return { text: 'Bronze 🥉', class: 'badge-bronze' };
     } else {
-        return { text: 'Contributor 🚀', class: 'badge-contributor' };
+        return { text: 'Contributor !!', class: 'badge-contributor' };
     }
 }
 
