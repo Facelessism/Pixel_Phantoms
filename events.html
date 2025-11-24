@@ -17,7 +17,7 @@
 
     <section class="hero events-hero">
         <h1>Campus Events</h1>
-        <p>Workshops, hackathons, meetups, and more, all in one place.</p>
+        <p>Workshops, hackathons, meetups, and more — all in one place.</p>
         
         <div id="countdown-section" class="countdown-hidden">
             <h3>Next Big Event Starts In:</h3>
@@ -54,16 +54,14 @@
     <section class="organize-section">
         <div class="organize-container">
             <div class="organize-content">
-                <h2>🚀 Host an Event</h2>
+                <h2> Host an Event</h2>
                 <p>Have an idea for a workshop or hackathon? Submit your proposal!</p>
                 <form id="organize-form">
                     <div class="form-row">
-                        <div class="input-group">
-                            <label>Event Title</label>
+                        <div class="form-group"> <label>Event Title</label>
                             <input type="text" id="event-title" placeholder="e.g. Intro to DevOps" required>
                         </div>
-                        <div class="input-group">
-                            <label>Event Type</label>
+                        <div class="form-group"> <label>Event Type</label>
                             <select id="event-type">
                                 <option value="workshop">Workshop</option>
                                 <option value="hackathon">Hackathon</option>
@@ -72,12 +70,10 @@
                             </select>
                         </div>
                     </div>
-                    <div class="input-group">
-                        <label>Proposed Date</label>
+                    <div class="form-group"> <label>Proposed Date</label>
                         <input type="date" id="event-date" required>
                     </div>
-                    <div class="input-group">
-                        <label>Description</label>
+                    <div class="form-group"> <label>Description</label>
                         <textarea id="event-desc" rows="4" placeholder="Briefly describe the event goal..." required></textarea>
                     </div>
                     <button type="submit" class="btn-organize">Submit Proposal</button>
@@ -85,7 +81,7 @@
                 </form>
             </div>
             <div class="organize-image">
-                <i class="fas fa-calendar-plus"></i>
+                <img src="assets/host-event.jpg" alt="Host an Event Illustration">
             </div>
         </div>
     </section>
