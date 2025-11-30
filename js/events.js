@@ -1,6 +1,3 @@
-// -------------------------------------------------------------------------
-// CONFIGURATION
-// -------------------------------------------------------------------------
 const API_URL = "https://script.google.com/macros/s/AKfycbza1-ZyT4B8hU3h87Agc_jkPQ8dAjQBJkXkvxYfQ4SNAUENQtlXmYzdXgkC_Kj_zt-B/exec"; 
 const LOCAL_JSON_PATH = "data/events.json";
 
@@ -12,9 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initOrganizeForm();
 });
 
-// -------------------------------------------------------------------------
 // 1. LOAD EVENTS (MERGE: Local + Google Sheet)
-// -------------------------------------------------------------------------
 async function loadEvents() {
     const container = document.getElementById("events-container");
     container.innerHTML = `<p class="loading-msg">Syncing events...</p>`;
@@ -156,9 +151,7 @@ window.changePage = function(newPage) {
     document.querySelector('.events-container').scrollIntoView({ behavior: 'smooth' });
 };
 
-// -------------------------------------------------------------------------
 // 2. COUNTDOWN LOGIC (Includes Live Status)
-// -------------------------------------------------------------------------
 function setupCountdown(events) {
     const now = new Date();
     
@@ -256,9 +249,7 @@ function renderStandardTimer(event) {
     `;
 }
 
-// -------------------------------------------------------------------------
 // 3. ORGANIZE FORM LOGIC
-// -------------------------------------------------------------------------
 function initOrganizeForm() {
     const form = document.getElementById('organize-form');
     const feedback = document.getElementById('organize-feedback');
