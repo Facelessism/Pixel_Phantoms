@@ -14,6 +14,9 @@ const SCORING = {
     
 };
 
+// Event attendance points
+const EVENT_POINTS = 250;
+
 // League Definitions for Logic
 const LEAGUES = {
     GOLD: { threshold: 15000, name: 'Gold Class', color: '#FFD700' },
@@ -193,6 +196,7 @@ function renderLeaderboard(contributors) {
                 <span class="lb-username">@${contributor.login}</span>
                 <span class="lb-stats">PRs: ${contributor.prCount} | Events: ${contributor.events}</span>
                 <span class="lb-league-tag" style="color: ${league.color}">${league.name}</span>
+                <span class="lb-stats">${contributor.prCount} PRs • ${contributor.eventsAttended} Events</span>
             </div>
             <div class="lb-xp-val">
                 ${contributor.xp.toLocaleString()} XP
@@ -210,4 +214,15 @@ function renderLeaderboard(contributors) {
             row.style.transform = "translateY(0)";
         }, index * 100);
     });
+    
+    // Add footer with info about the scoring system
+    const footer = document.createElement('div');
+    footer.className = 'lb-footer-enhanced';
+    footer.innerHTML = `
+        <div class="lb-scoring-info">
+            <span class="scoring-item">PR Levels: L1=200pt, L2=500pt, L3=1100pt</span>
+            <span class="scoring-item">Events: 250pt each</span>
+        </div>
+    `;
+    container.appendChild(footer);
 }

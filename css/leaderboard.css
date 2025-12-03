@@ -383,6 +383,23 @@ body.hud-mode {
     width: 200px;
 }
 
+.export-btn {
+    background: rgba(0, 170, 255, 0.2);
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.export-btn:hover {
+    background: rgba(0, 170, 255, 0.4);
+    box-shadow: 0 0 10px var(--neon-cyan);
+}
+
 .table-wrapper {
     overflow-y: auto;
     flex: 1;
@@ -527,8 +544,6 @@ body.hud-mode {
     .cube-wrapper { transform: scale(0.8) rotateX(-20deg) rotateY(-30deg); }
     .physics-grid { grid-template-columns: 1fr; }
 }
-
-/* ... (Previous CSS remains same) ... */
 
 /* --- SECTION MANAGEMENT --- */
 .hud-section {

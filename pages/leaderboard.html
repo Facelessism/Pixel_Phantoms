@@ -97,14 +97,32 @@
 
                     <div class="bento-item table-panel">
                         <div class="panel-header">
-                            <span><i class="fas fa-list-ol"></i> TOP_PERFORMERS</span>
+                            <div>ACTIVE_AGENTS</div>
+                            <div style="display: flex; gap: 15px;">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="search-input" placeholder="Filter agents...">
+                                </div>
+                                <button class="export-btn" id="export-leaderboard">
+                                    <i class="fas fa-download"></i> Export
+                                </button>
+                            </div>
                         </div>
                         <div class="table-wrapper">
                             <table class="hud-table">
                                 <thead>
-                                    <tr><th>RANK</th><th>OPERATOR</th><th>LEAGUE</th><th>XP</th><th>STATUS</th></tr>
+                                    <tr>
+                                        <th>RANK</th>
+                                        <th>AGENT</th>
+                                        <th>CLASS</th>
+                                        <th>VELOCITY</th>
+                                        <th>XP</th>
+                                        <th>STATUS</th>
+                                    </tr>
                                 </thead>
-                                <tbody id="leaderboard-body"></tbody>
+                                <tbody id="leaderboard-body">
+                                    <!-- Populated by JS -->
+                                </tbody>
                             </table>
                         </div>
                     </div>

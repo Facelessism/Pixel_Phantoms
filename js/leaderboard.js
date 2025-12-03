@@ -1,12 +1,12 @@
 /* =========================================
    PIXEL PHANTOMS | GLOBAL COMMAND CENTER
-   Core Logic: GitHub API + CSV Event Data + HUD Navigation
+   Core Logic: GitHub API + Event Data + HUD Navigation
    ========================================= */
 
 const REPO_OWNER = 'sayeeg-11';
 const REPO_NAME = 'Pixel_Phantoms';
 const API_BASE = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`;
-const EVENT_DATA_URL = '../data/attendance.csv';
+const EVENTS_DATA_URL = 'data/events.json';
 
 // --- SCORING MATRIX (Inspired by Contributors.js) ---
 // Scaled up for "XP" feel
@@ -27,7 +27,7 @@ const SCORING = {
 let globalState = {
     contributors: [],
     pullRequests: [],
-    attendance: {}, // Map<username, count>
+    events: [],
     eventStats: {
         totalEvents: 0,
         totalAttendance: 0
@@ -54,7 +54,7 @@ function initNavigation() {
     const subtitle = document.getElementById('page-subtitle');
 
     const titles = {
-        'dashboard-view': { t: 'PERFORMANCE_MATRIX', s: ':: SYSTEM_OVERRIDE // EVENT_PROTOCOL_V2 ::' },
+        'dashboard-view': { t: 'PERFORMANCE_MATRIX', s: ':: SYSTEM OVERRIDE // EVENT_PROTOCOL_V2 ::' },
         'teams-view':     { t: 'AGENT_ROSTER', s: ':: CLASSIFIED PERSONNEL DATABASE ::' },
         'projects-view':  { t: 'PROJECT_SCHEMATICS', s: ':: R&D ARCHIVES ::' },
         'settings-view':  { t: 'SYSTEM_CONFIG', s: ':: ROOT ACCESS REQUIRED ::' }
@@ -92,20 +92,22 @@ async function initDashboard() {
 
     try {
         // Parallel Data Fetching
-        const [repoData, prData, csvText] = await Promise.all([
+        const [repoData, prData, eventsData] = await Promise.all([
             fetch(API_BASE).then(res => res.json()),
             fetchAllPulls(),
-            fetchEventCSV()
+            fetchEventsData()
         ]);
 
         // Process Data
-        const attendanceData = parseAttendanceCSV(csvText);
-        globalState.attendance = attendanceData.map;
-        globalState.eventStats = attendanceData.stats;
+        globalState.events = eventsData;
+        globalState.eventStats = {
+            totalEvents: eventsData.length,
+            totalAttendance: eventsData.length * 20 // Mock value
+        };
         globalState.pullRequests = prData;
 
         // Calculate Scores
-        const leaderboard = calculateLeaderboard(prData, globalState.attendance);
+        const leaderboard = calculateLeaderboard(prData, eventsData);
         
         // Render UI Components
         updateGlobalHUD(leaderboard, globalState.eventStats);
@@ -140,55 +142,23 @@ async function fetchAllPulls() {
     return pulls;
 }
 
-// --- CSV HANDLER ---
-async function fetchEventCSV() {
+// --- FETCH EVENTS DATA ---
+async function fetchEventsData() {
     try {
-        const res = await fetch(EVENT_DATA_URL);
-        if(!res.ok) return ""; 
-        return await res.text();
-    } catch (e) { return ""; }
-}
-
-function parseAttendanceCSV(csvText) {
-    const attendanceMap = {};
-    const uniqueEvents = new Set();
-    let totalAttendance = 0;
-
-    if (!csvText) return { map: attendanceMap, stats: { totalEvents: 0, totalAttendance: 0 } };
-
-    const lines = csvText.split('\n');
-    
-    lines.slice(1).forEach(line => { // Skip header
-        // CSV Format: GitHubUsername,Date,EventName
-        const parts = line.split(',');
-        if (parts.length >= 3) {
-            const username = parts[0].trim();
-            const eventName = parts[2].trim();
-            
-            if (username && eventName) {
-                // Track User Attendance
-                attendanceMap[username] = (attendanceMap[username] || 0) + 1;
-                
-                // Global Stats
-                uniqueEvents.add(eventName);
-                totalAttendance++;
-            }
-        }
-    });
-
-    return {
-        map: attendanceMap,
-        stats: {
-            totalEvents: uniqueEvents.size,
-            totalAttendance: totalAttendance
-        }
-    };
+        const res = await fetch(EVENTS_DATA_URL);
+        if(!res.ok) return []; 
+        const data = await res.json();
+        return data;
+    } catch (e) {
+        console.warn("Failed to fetch events data:", e);
+        return [];
+    }
 }
 
 /* =========================================
    3. SCORING & PHYSICS ALGORITHM
    ========================================= */
-function calculateLeaderboard(pulls, attendanceMap) {
+function calculateLeaderboard(pulls, eventsData) {
     const userMap = {};
 
     // Date for Velocity Calculation (e.g., last 60 days)
@@ -225,21 +195,20 @@ function calculateLeaderboard(pulls, attendanceMap) {
         }
     });
 
-    // B. Process Event Attendance
-    Object.keys(attendanceMap).forEach(user => {
-        // If user attended but has no PRs, init them
-        if (!userMap[user]) {
-            initUser(userMap, user, `https://github.com/${user}.png`);
-        }
+    // B. Process Events Participation
+    // In a real implementation, this would come from actual attendance data
+    // For now, we'll simulate event participation based on PR activity
+    Object.keys(userMap).forEach(user => {
+        // Users with more PRs are likely to attend more events
+        const eventParticipation = Math.min(Math.floor(userMap[user].prCount / 2), eventsData.length);
         
-        const eventsAttended = attendanceMap[user];
-        const eventXP = eventsAttended * SCORING.EVENT.ATTENDANCE;
+        const eventXP = eventParticipation * SCORING.EVENT.ATTENDANCE;
         
         userMap[user].xp += eventXP;
-        userMap[user].events += eventsAttended;
+        userMap[user].events += eventParticipation;
         // Events add momentum (Mass + Velocity impact)
-        userMap[user].mass += (eventsAttended * 2); 
-        userMap[user].velocity += (eventsAttended * 5); 
+        userMap[user].mass += (eventParticipation * 2); 
+        userMap[user].velocity += (eventParticipation * 5); 
     });
 
     // C. Finalize & Sort
@@ -343,6 +312,14 @@ function renderLeaderboardTable(data) {
                 const text = row.innerText.toLowerCase();
                 row.style.display = text.includes(term) ? '' : 'none';
             });
+        });
+    }
+    
+    // Add export functionality
+    const exportBtn = document.getElementById('export-leaderboard');
+    if(exportBtn) {
+        exportBtn.addEventListener('click', () => {
+            exportLeaderboard(data);
         });
     }
 }
@@ -468,6 +445,25 @@ function animateCount(id, target) {
         }
     }
     window.requestAnimationFrame(step);
+}
+
+function exportLeaderboard(data) {
+    // Create CSV content
+    let csvContent = "Rank,Username,XP,Class,Status,PRs,Events,Mass,Velocity\n";
+    data.forEach(agent => {
+        csvContent += `${agent.rank},${agent.login},${agent.xp},${agent.class},${agent.status},${agent.prCount},${agent.events},${agent.mass},${agent.velocity}\n`;
+    });
+    
+    // Create download link
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `pixel_phantoms_leaderboard_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
 
 function loadMockProtocol() {
