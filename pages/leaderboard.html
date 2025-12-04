@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Phantoms | Global Command Center</title>
+    
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/home-gsap.css">
+    <link rel="stylesheet" href="../css/back-to-top.css">
+    
+    <link rel="stylesheet" href="../css/leaderboard.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="hacker-theme hud-mode">
+
+    <div id="navbar-placeholder"></div>
+
+    <div class="dashboard-container">
+        
+        <aside class="hud-sidebar">
+            <div class="sidebar-icon active" data-target="dashboard-view"><i class="fas fa-chart-pie"></i></div>
+            <div class="sidebar-icon" data-target="teams-view"><i class="fas fa-users"></i></div>
+            <div class="sidebar-icon" data-target="projects-view"><i class="fas fa-cube"></i></div>
+            <div class="sidebar-icon" data-target="achievements-view"><i class="fas fa-trophy"></i></div>
+            <div class="sidebar-icon" data-target="settings-view"><i class="fas fa-cog"></i></div>
+        </aside>
+
+        <main class="hud-main">
+            
+            <header class="hud-top-bar">
+                <div class="header-title">
+                    <h1 class="glitch-text" id="page-title" data-text="PERFORMANCE_MATRIX">PERFORMANCE_MATRIX</h1>
+                    <span class="sub-text" id="page-subtitle">:: SYSTEM_OVERRIDE // EVENT_PROTOCOL_V2 ::</span>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-pill">
+                        <span class="label">PING</span>
+                        <span class="val green" id="ping-counter">12ms</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="label">DATA_STREAM</span>
+                        <span class="val blue">SYNCED</span>
+                    </div>
+                </div>
+            </header>
+
+            <div id="dashboard-view" class="hud-section active">
+                <div class="bento-grid">
+                    <div class="bento-item stage-3d-panel">
+                        <div class="panel-label">ARTIFACT_CONTROLLER</div>
+                        <div class="scene-3d">
+                            <div class="cube-wrapper" id="cube">
+                                <div class="face front"><div></div></div>
+                                <div class="face back"><div></div></div>
+                                <div class="face right"><div></div></div>
+                                <div class="face left"><div></div></div>
+                                <div class="face top"><div></div></div>
+                                <div class="face bottom"><div></div></div>
+                                <div class="inner-core"></div>
+                            </div>
+                        </div>
+                        <div class="control-text"><i class="fas fa-mouse-pointer"></i> HOVER TO ROTATE</div>
+                    </div>
+
+                    <div class="bento-item physics-panel">
+                        <div class="panel-label">GAMIFIED_PHYSICS_ENGINE</div>
+                        <div class="physics-grid">
+                            <div class="physics-stat">
+                                <h4><i class="fas fa-tachometer-alt"></i> Velocity (V)</h4>
+                                <div class="bar-container"><div class="bar-fill" style="width: 85%"></div></div>
+                            </div>
+                            <div class="physics-stat">
+                                <h4><i class="fas fa-weight-hanging"></i> Mass (M)</h4>
+                                <div class="bar-container"><div class="bar-fill" style="width: 60%"></div></div>
+                            </div>
+                            <div class="physics-stat">
+                                <h4><i class="fas fa-meteor"></i> Impact (F)</h4>
+                                <div class="bar-container"><div class="bar-fill" style="width: 92%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bento-item stat-tile s1">
+                        <div class="tile-icon"><i class="fas fa-user-astronaut"></i></div>
+                        <div class="tile-info"><h3>Performers</h3><h2 id="total-performers">0</h2></div>
+                    </div>
+                    <div class="bento-item stat-tile s2">
+                        <div class="tile-icon"><i class="fas fa-calendar-check"></i></div>
+                        <div class="tile-info"><h3>Events Held</h3><h2 id="total-events">0</h2></div>
+                    </div>
+                    <div class="bento-item stat-tile s3">
+                        <div class="tile-icon"><i class="fas fa-users"></i></div>
+                        <div class="tile-info"><h3>Total Attendance</h3><h2 id="total-attendance">0</h2></div>
+                    </div>
+
+                    <div class="bento-item table-panel">
+                        <div class="panel-header">
+                            <div>ACTIVE_AGENTS</div>
+                            <div style="display: flex; gap: 15px;">
+                                <div class="search-box">
+                                    <i class="fas fa-search"></i>
+                                    <input type="text" id="search-input" placeholder="Filter agents...">
+                                </div>
+                                <button class="export-btn" id="export-leaderboard">
+                                    <i class="fas fa-download"></i> Export
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-wrapper">
+                            <table class="hud-table">
+                                <thead>
+                                    <tr>
+                                        <th>RANK</th>
+                                        <th>AGENT</th>
+                                        <th>CLASS</th>
+                                        <th>VELOCITY</th>
+                                        <th>XP</th>
+                                        <th>STATUS</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="leaderboard-body">
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="bento-item graph-panel">
+                        <div class="panel-label">ACTIVITY_WAVEFORM</div>
+                        <div class="chart-bars" id="chart-bars"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="teams-view" class="hud-section">
+                <div class="roster-grid">
+                    <div class="roster-card">
+                        <div class="roster-header">
+                            <div class="roster-icon gold"><i class="fas fa-crown"></i></div>
+                            <h3>GOLD CLASS</h3>
+                        </div>
+                        <ul class="roster-list" id="roster-gold"></ul>
+                    </div>
+                    <div class="roster-card">
+                        <div class="roster-header">
+                            <div class="roster-icon silver"><i class="fas fa-shield-alt"></i></div>
+                            <h3>SILVER CLASS</h3>
+                        </div>
+                        <ul class="roster-list" id="roster-silver"></ul>
+                    </div>
+                    <div class="roster-card">
+                        <div class="roster-header">
+                            <div class="roster-icon bronze"><i class="fas fa-medal"></i></div>
+                            <h3>BRONZE CLASS</h3>
+                        </div>
+                        <ul class="roster-list" id="roster-bronze"></ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="projects-view" class="hud-section">
+                <h2 class="section-heading">Projects & Modules</h2>
+                <div class="module-sections">
+                    <h3 class="section-title-module"> Enhanced Module Design (Discipline Tracks)</h3>
+                    <div class="discipline-track-container">
+                        <a href="#" class="track-card" data-track="WEB">
+                            <h4>Discipline Track: WEB</h4>
+                            <p><strong>Challenge Focus:</strong> Full-Stack Security & Deployment</p>
+                            <p class="complexity-level level-high">Complexity: High</p>
+                        </a>
+                        <a href="#" class="track-card" data-track="AI">
+                            <h4>Discipline Track: AI</h4>
+                            <p><strong>Challenge Focus:</strong> Model Deployment & Reinforcement Learning</p>
+                            <p class="complexity-level level-high">Complexity: High</p>
+                        </a>
+                        <a href="#" class="track-card" data-track="DATA">
+                            <h4>Discipline Track: DATA</h4>
+                            <p><strong>Challenge Focus:</strong> Real-time Stream Processing & Predictive Analytics</p>
+                            <p class="complexity-level level-high">Complexity: High</p>
+                        </a>
+                        <a href="#" class="track-card" data-track="APP">
+                            <h4>Discipline Track: APP</h4>
+                            <p><strong>Challenge Focus:</strong> Cross-Platform Development & Embedded Systems Integration</p>
+                            <p class="complexity-level level-high">Complexity: High</p>
+                        </a>
+                        <a href="#" class="track-card" data-track="BOT">
+                            <h4>Discipline Track: BOT</h4>
+                            <p><strong>Challenge Focus:</strong> NLP Intent Recognition & Autonomous Robotics</p>
+                            <p class="complexity-level level-high">Complexity: High</p>
+                        </a>
+                        <a href="#" class="track-card new-track" data-track="NEW">
+                            <h4>Discipline Track: New Track (suggested)</h4>
+                            <p><strong>Challenge Focus:</strong> IoT/Cybersecurity Implementation</p>
+                            <p class="complexity-level level-medium-high">Complexity: Medium/High</p>
+                        </a>
+                    </div>
+                    
+                    <hr class="section-divider">
+                    
+                    <h3 class="section-title-module"> Standardization & Clarity for Candidates</h3>
+                    <div class="info-card-container">
+                        <div class="info-card">
+                            <h4>Candidate's Rulebook</h4>
+                            <ul>
+                                <li><strong>Standardized Rules:</strong> Provides easily digestible guidelines for participation, eligibility, ethical conduct, and submission requirements.</li>
+                                <li><strong>Transparency of Scoring:</strong> Clearly documents how the MCS is calculated (e.g., criteria for code quality, documentation, and functionality).</li>
+                                <li><strong>Leaderboard Logic:</strong> Explicitly defines the weighting factors ($Weight_i$) used in the Domination Metric, allowing students to plan their competition strategy.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <hr class="section-divider">
+                    
+                    <h3 class="section-title-module"> Integration of R&D Archives</h3>
+                    <div class="info-card-container">
+                        <div class="info-card">
+                            <h4>R&D Archives Scoring & Knowledge Base</h4>
+                            <ul>
+                                <li><strong>Bonus Points:</strong> Students earn direct bonus points in the Domination Metric for high-quality, relevant research, tools, or proof-of-concepts contributed to the Archives.</li>
+                                <li><strong>Knowledge Base:</strong> The Archives will serve as a valuable, categorized resource for all participants, linked directly to the Discipline Tracks.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="achievements-view" class="hud-section">
+                <div class="achievements-container">
+                    <h2 class="section-title">ACHIEVEMENTS & BADGES</h2>
+                    <div class="achievements-grid" id="achievements-grid">
+                        </div>
+                    
+                    <div class="comparison-section">
+                        <h3>COMPARE YOUR PERFORMANCE</h3>
+                        <div class="comparison-controls">
+                            <select id="compare-user-select">
+                                <option value="">Select a user to compare</option>
+                                </select>
+                            <button id="compare-btn" class="btn-primary">Compare</button>
+                        </div>
+                        <div class="comparison-results" id="comparison-results">
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="settings-view" class="hud-section">
+                <div class="settings-panel">
+                    <h3>SYSTEM_CONFIGURATION</h3>
+                    <div class="setting-row">
+                        <span>HIGH_CONTRAST_MODE</span>
+                        <label class="toggle-switch"><input type="checkbox"><span></span></label>
+                    </div>
+                    <div class="setting-row">
+                        <span>REDUCE_MOTION</span>
+                        <label class="toggle-switch"><input type="checkbox"><span></span></label>
+                    </div>
+                    <div class="setting-row">
+                        <span>DATA_REFRESH_RATE</span>
+                        <select class="hud-select">
+                            <option>REALTIME</option>
+                            <option>5s INTERVAL</option>
+                            <option>1m INTERVAL</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <span>CHART_TYPE</span>
+                        <select class="hud-select" id="chart-type-selector">
+                            <option value="bar">Bar Chart</option>
+                            <option value="line">Line Chart</option>
+                            <option value="pie">Pie Chart</option>
+                        </select>
+                    </div>
+                    <div class="system-log">
+                        <p>> System Boot... OK</p>
+                        <p>> Connecting to GitHub API... OK</p>
+                        <p>> Fetching Event CSV... OK</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div> <div id="contributor-modal" class="modal-overlay">
+        <div class="modal-container">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            
+            <div class="modal-header">
+                <img id="modal-avatar" src="" alt="Contributor">
+                <h2 id="modal-name">Username</h2>
+                <p id="modal-id" class="modal-subtitle">ID: --</p>
+                <div id="modal-league-badge" class="modal-league-tag"></div>
+            </div>
+
+            <div class="modal-stats-row">
+                <div class="modal-stat">
+                    <span class="stat-label">Rank</span>
+                    <span class="stat-number" id="modal-rank">#0</span>
+                </div>
+                <div class="modal-stat">
+                    <span class="stat-label">Points</span>
+                    <span class="stat-number" id="modal-score">0</span>
+                </div>
+                <div class="modal-stat">
+                    <span class="stat-label">PRs</span>
+                    <span class="stat-number" id="modal-prs">0</span>
+                </div>
+                <div class="modal-stat">
+                    <span class="stat-label">Commits</span>
+                    <span class="stat-number" id="modal-commits">0</span>
+                </div>
+            </div>
+
+            <div class="modal-progress-section">
+                <h3>Progress Overview</h3>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <p id="progress-text">Level Progress: 0%</p>
+                </div>
+            </div>
+
+            <div class="modal-achievements-section">
+                <h3>Achievements</h3>
+                <div class="modal-achievements-grid" id="modal-achievements">
+                    </div>
+            </div>
+
+            <div class="modal-actions">
+                <a href="#" id="modal-pr-link" target="_blank" class="modal-btn primary-btn">
+                    <i class="fas fa-code-branch"></i> View Pull Requests
+                </a>
+                <a href="#" id="modal-profile-link" target="_blank" class="modal-btn secondary-btn">
+                    <i class="fab fa-github"></i> GitHub Profile
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="../js/navbar.js"></script>
+    <script src="js/leaderboard-enhanced.js"></script>
+    <script src="../js/footer.js"></script>
+    <script src="../js/theme.js"></script>
+    <script src="../js/back-to-top.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="../js/leaderboard.js"></script>
+
+    <script>
+        renderNavbar('../');
+        renderFooter('../');
+    </script>
+</body>
+</html>
