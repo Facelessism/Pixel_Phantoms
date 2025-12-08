@@ -100,3 +100,81 @@ function initWobbleToggle() {
         });
     }
 }
+
+// =========================================
+// INTEGRATE QUICK FILTERS WITH EXISTING GSAP ANIMATIONS
+// =========================================
+
+// Override the initFilters function to work with quick filters
+const originalInitFilters = window.initFilters;
+
+window.initFilters = function() {
+    // Load the quick filters script
+    if (typeof window.projectFilters === 'undefined') {
+        console.warn('Quick filters not loaded. Loading now...');
+        
+        // Create script element and load it
+        const script = document.createElement('script');
+        script.src = 'js/projects-filters.js';
+        script.onload = function() {
+            console.log('Quick filters loaded successfully');
+            window.projectFilters.initQuickFilters();
+            window.projectFilters.initSearch();
+            window.projectFilters.initMobileFilters();
+            window.projectFilters.updateFilterCounts();
+        };
+        document.head.appendChild(script);
+    } else {
+        // Quick filters already loaded, just initialize them
+        window.projectFilters.initQuickFilters();
+        window.projectFilters.initSearch();
+        window.projectFilters.initMobileFilters();
+        window.projectFilters.updateFilterCounts();
+    }
+    
+    // Also run the original filter initialization
+    if (originalInitFilters) {
+        originalInitFilters();
+    }
+};
+
+// Override the animateCards function to include filter counts
+const originalAnimateCards = window.animateCards;
+
+window.animateCards = function() {
+    if (originalAnimateCards) {
+        originalAnimateCards();
+    }
+    
+    // Update filter counts after animation
+    setTimeout(() => {
+        if (window.projectFilters && window.projectFilters.updateFilterCounts) {
+            window.projectFilters.updateFilterCounts();
+        }
+    }, 1000);
+};
+
+// Initialize everything when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize GSAP ScrollTrigger
+    if (typeof gsap !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+    }
+    
+    // Run animations
+    if (window.animateCards) {
+        window.animateCards();
+    }
+    
+    // Setup Wobble Toggle
+    if (window.initWobbleToggle) {
+        window.initWobbleToggle();
+    }
+    
+    // Setup Filters (including quick filters)
+    if (window.initFilters) {
+        window.initFilters();
+    }
+    
+    console.log('Projects page fully initialized with quick filters');
+});
