@@ -493,5 +493,50 @@
         }
     </script>
 
+<!-- FEEDBACK WIDGET -->
+<div id="feedback-widget" aria-hidden="false">
+  <button id="feedback-toggle" aria-label="Open feedback form" aria-expanded="false" title="Send feedback">
+    <span class="ff-icon" aria-hidden="true">✉️</span>
+  </button>
+
+  <div id="feedback-panel" role="dialog" aria-modal="true" aria-labelledby="feedback-title" tabindex="-1">
+    <header class="ff-header">
+      <h3 id="feedback-title">Send Feedback</h3>
+      <button class="ff-close" aria-label="Close feedback form">&times;</button>
+    </header>
+
+    <form id="feedback-form" novalidate>
+      <label for="fb-name">Name (optional)</label>
+      <input id="fb-name" name="name" type="text" placeholder="Your name">
+
+      <label for="fb-email">Email (optional)</label>
+      <input id="fb-email" name="email" type="email" placeholder="you@example.com">
+
+      <label for="fb-message">Suggestions / Issue</label>
+      <textarea id="fb-message" name="message" rows="4" required placeholder="Describe feedback or bug..."></textarea>
+
+      <div class="ff-rating" aria-hidden="false">
+        <span class="rating-label">Rating</span>
+        <div id="star-rating" role="radiogroup" aria-label="Star rating (1 to 5)">
+          <button type="button" class="star" data-value="1" aria-label="1 star" role="radio" aria-checked="false">★</button>
+          <button type="button" class="star" data-value="2" aria-label="2 stars" role="radio" aria-checked="false">★</button>
+          <button type="button" class="star" data-value="3" aria-label="3 stars" role="radio" aria-checked="false">★</button>
+          <button type="button" class="star" data-value="4" aria-label="4 stars" role="radio" aria-checked="false">★</button>
+          <button type="button" class="star" data-value="5" aria-label="5 stars" role="radio" aria-checked="false">★</button>
+        </div>
+      </div>
+
+      <div class="ff-actions">
+        <button type="submit" class="btn-cyber small">Submit</button>
+        <button type="button" id="ff-dismiss" class="btn-link">Dismiss</button>
+      </div>
+
+      <div id="ff-status" role="status" aria-live="polite" class="ff-status" hidden></div>
+    </form>
+  </div>
+</div>
+
+<script src="js/feedback.js"></script>
+
 </body>
 </html>
