@@ -88,6 +88,11 @@
 }
 
 /* GENERAL */
+html {
+    overflow-x: hidden;
+    width: 100%;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -99,6 +104,9 @@ body {
     flex-direction: column;
     min-height: 100vh;
     line-height: 1.6;
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
 }
 
 /* Prevent body scroll when mobile menu is open */
