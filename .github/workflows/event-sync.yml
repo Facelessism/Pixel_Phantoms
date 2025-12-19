@@ -1,1 +1,38 @@
+name: Event Sync Pipeline
 
+on:
+  schedule:
+    - cron: '0 */3 * * *' # Runs every 3 hours
+  workflow_dispatch:      # Allows manual trigger from GitHub Actions tab
+
+permissions:
+  contents: write         # Required to commit changes
+
+jobs:
+  sync-events:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Node 18+ is required for native fetch()
+
+      - name: Run Sync Script
+        run: node scripts/update-events.js
+
+      - name: Check for Changes
+        id: git-check
+        run: |
+          git diff --exit-code data/events.json || echo "changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and Push Changes
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data/events.json
+          git commit -m "Update: Synced events from Google Sheets"
+          git push
