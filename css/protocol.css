@@ -1,0 +1,72 @@
+/* Custom properties for Neon Circuits */
+:root {
+    --circuit-blue: #00aaff;
+    --circuit-purple: #bc13fe;
+    --circuit-green: #0aff9d;
+    --flicker-speed: 3s;
+}
+
+.signal-grid {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: radial-gradient(circle at center, #13161d 0%, #0d0f14 100%);
+    z-index: -1;
+    overflow: hidden;
+}
+
+/* Flickering Circuit Animation */
+.circuit-trace {
+    position: absolute;
+    background: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-color);
+    opacity: 0.15;
+    animation: signal-flicker var(--flicker-speed) infinite ease-in-out;
+}
+
+@keyframes signal-flicker {
+    0%, 100% { opacity: 0.1; filter: brightness(1); }
+    50% { opacity: 0.6; filter: brightness(2.5); box-shadow: 0 0 20px var(--accent-color); }
+    52% { opacity: 0.2; }
+    54% { opacity: 0.7; }
+}
+
+/* Bento Grid Layout */
+.protocol-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.protocol-card {
+    background: rgba(26, 29, 37, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 16px;
+    backdrop-filter: blur(15px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.protocol-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--accent-color);
+}
+
+.neon-blue { --accent-color: var(--circuit-blue); }
+.neon-purple { --accent-color: var(--circuit-purple); }
+.neon-green { --accent-color: var(--circuit-green); }
+
+.weight-tags {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.weight-tags span {
+    padding: 5px 12px;
+    background: rgba(0, 170, 255, 0.1);
+    border: 1px solid var(--accent-color);
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+}
