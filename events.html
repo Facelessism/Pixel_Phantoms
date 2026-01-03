@@ -1,23 +1,39 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Explore upcoming events at Pixel Phantoms: hackathons, workshops, meetups, and webinars. Join the community and level up your skills.">
-    <meta property="og:title" content="Pixel Phantoms | Events">
-    <meta property="og:description" content="Explore upcoming events at Pixel Phantoms: hackathons, workshops, meetups, and webinars. Join the community and level up your skills.">
-    <meta property="og:image" content="assets/logo.png">
-    <meta property="og:url" content="https://pixelphantoms.com/events.html">
-    <meta property="og:type" content="website">
-    <link rel="canonical" href="https://pixelphantoms.com/events.html">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore upcoming events at Pixel Phantoms: hackathons, workshops, meetups, and webinars. Join the community and level up your skills."
+    />
+    <meta property="og:title" content="Pixel Phantoms | Events" />
+    <meta
+      property="og:description"
+      content="Explore upcoming events at Pixel Phantoms: hackathons, workshops, meetups, and webinars. Join the community and level up your skills."
+    />
+    <meta property="og:image" content="assets/logo.png" />
+    <meta property="og:url" content="https://pixelphantoms.com/events.html" />
+    <meta property="og:type" content="website" />
+    <link rel="canonical" href="https://pixelphantoms.com/events.html" />
     <title>Pixel Phantoms | Events</title>
-    <link rel="icon" href="assets/logo.png">
+    <link rel="icon" href="assets/logo.png" />
 
-
+    <link rel="stylesheet" href="css/scroll-progress.css" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/events.css" />
     <link rel="stylesheet" href="css/home-gsap.css" />
+    <link rel="stylesheet" href="css/cursor-effect.css" />
     <link rel="stylesheet" href="css/back-to-top.css" />
+    <link rel="stylesheet" href="css/login.css" />
+    <style>
+      /* Minimal modal styles that reuse login.css form classes */
+      #register-modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.6); z-index: 9999; }
+      #register-modal.show { display: flex; }
+      #register-modal .modal-dialog { max-width: 560px; width: 100%; padding: 20px; border-radius: 14px; position: relative; }
+      #register-modal .modal-close { position: absolute; top: 12px; right: 12px; background: transparent; border: none; color: var(--text-primary); font-size: 1.4rem; cursor: pointer; }
+      #register-modal .register-form .input-group { margin-bottom: 12px; }
+    </style>
     <link
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap"
       rel="stylesheet"
@@ -29,6 +45,9 @@
   </head>
 
   <body class="hacker-theme">
+    <div id="scroll-progress-container">
+      <div id="scroll-progress-bar"></div>
+    </div>
     <!-- SKIP TO CONTENT LINK (ACCESSIBILITY) -->
     <a href="#main-events" class="skip-to-content" id="skip-link">
       <i class="fas fa-forward"></i> Skip to Main Content
@@ -67,9 +86,8 @@
           </div>
           <p id="next-event-name" class="highlight-event"></p>
           <p class="countdown-note">
-  No events scheduled immediately at the moment. Please check back later.
-</p>
-
+            No events scheduled immediately at the moment. Please check back later.
+          </p>
         </div>
       </section>
 
@@ -83,37 +101,46 @@
 
       <section class="organize-section">
         <div class="organize-container">
-            <div class="organize-content">
-                <h2> Host an Event</h2>
-                <p>Have an idea for a workshop or hackathon? Submit your proposal!</p>
-                <form id="organize-form">
-                    <div class="form-row">
-                        <div class="form-group"> <label>Event Title</label>
-                            <input type="text" id="event-title" placeholder="e.g. Intro to DevOps" required>
-                        </div>
-                        <div class="form-group"> <label>Event Type</label>
-                            <select id="event-type">
-                                <option value="workshop">Workshop</option>
-                                <option value="hackathon">Hackathon</option>
-                                <option value="meetup">Meetup</option>
-                                <option value="webinar">Webinar</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">  <label for="event-date">Proposed Date</label>
-                         <input type="date"id="event-date"name="event-date"required>
-  <small id="event-date-error" class="field-error"></small>
-                    </div>
-                    <div class="form-group"> <label>Description</label>
-                        <textarea id="event-desc" rows="4" placeholder="Briefly describe the event goal..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn-organize">Submit Proposal</button>
-                    <div id="organize-feedback" class="feedback-message"></div>
-                </form>
-            </div>
-            <div class="organize-image">
-                <img src="assets/host-event.jpg" alt="Host an Event Illustration" loading="lazy">
-            </div>
+          <div class="organize-content">
+            <h2>Host an Event</h2>
+            <p>Have an idea for a workshop or hackathon? Submit your proposal!</p>
+            <form id="organize-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Event Title</label>
+                  <input type="text" id="event-title" placeholder="e.g. Intro to DevOps" required />
+                </div>
+                <div class="form-group">
+                  <label>Event Type</label>
+                  <select id="event-type">
+                    <option value="workshop">Workshop</option>
+                    <option value="hackathon">Hackathon</option>
+                    <option value="meetup">Meetup</option>
+                    <option value="webinar">Webinar</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="event-date">Proposed Date</label>
+                <input type="date" id="event-date" name="event-date" required />
+                <small id="event-date-error" class="field-error"></small>
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <textarea
+                  id="event-desc"
+                  rows="4"
+                  placeholder="Briefly describe the event goal..."
+                  required
+                ></textarea>
+              </div>
+              <button type="submit" class="btn-organize">Submit Proposal</button>
+              <div id="organize-feedback" class="feedback-message"></div>
+            </form>
+          </div>
+          <div class="organize-image">
+            <img src="assets/host-event.jpg" alt="Host an Event Illustration" loading="lazy" />
+          </div>
         </div>
       </section>
     </main>
@@ -121,11 +148,43 @@
     <div id="footer-placeholder"></div>
     <script src="js/footer.js"></script>
     <script>
-      renderFooter();
+      renderFooter('');
     </script>
 
+    <!-- Registration Modal -->
+    <div id="register-modal" aria-hidden="true">
+      <div class="modal-dialog login-card" role="dialog" aria-modal="true" aria-labelledby="register-modal-title">
+        <button class="modal-close" aria-label="Close">&times;</button>
+        <h2 id="register-modal-title" class="form-title">Register for <span id="register-event-title"></span></h2>
+        <form id="register-form" class="register-form">
+          <div class="input-group">
+            <label>First Name</label>
+            <input name="firstName" type="text" placeholder="First name" required />
+          </div>
+          <div class="input-group">
+            <label>Last Name</label>
+            <input name="lastName" type="text" placeholder="Last name" required />
+          </div>
+          <div class="input-group">
+            <label>Age</label>
+            <input name="age" type="number" min="1" placeholder="Age" required />
+          </div>
+          <div class="input-group">
+            <label>Email</label>
+            <input name="email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div style="display:flex;gap:12px;margin-top:12px;">
+            <button type="button" class="btn-secondary modal-cancel">Cancel</button>
+            <button type="submit" class="btn-primary">Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <script src="js/theme.js"></script>
+    <script src="js/cursor-effect.js"></script>
     <script src="js/events.js"></script>
     <script src="js/back-to-top.js"></script>
+    <script src="js/scroll-progress.js"></script>
   </body>
 </html>

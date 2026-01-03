@@ -907,6 +907,13 @@ main {
 .rookie .league-icon { color: #00aaff; background: rgba(0, 170, 255, 0.1); }
 
 /* Footer */
+
+footer {
+    all: unset;
+    display: block;
+}
+
+
 .lb-footer {
     margin-top: 30px;
     text-align: center;

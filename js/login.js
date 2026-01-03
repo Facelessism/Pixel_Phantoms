@@ -14,60 +14,103 @@ document.addEventListener('DOMContentLoaded', () => {
     // Login form fields
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
-    const forgotPasskeyLink = document.getElementById('forgot-passkey-link'); // <-- NEW LINK
+    const forgotPasskeyLink = document.getElementById('forgot-passkey-link');
 
     // Sign Up form fields
     const newUsernameInput = document.getElementById('new-username');
     const newEmailInput = document.getElementById('new-email');
     const newPasswordInput = document.getElementById('new-password');
 
-    // Forgot Password elements (NEW)
-    const forgotPasswordView = document.getElementById('forgot-password-view'); // <-- NEW VIEW
-    const resetEmailInput = document.getElementById('reset-email'); // <-- NEW INPUT
+    // Forgot Password elements
+    const forgotPasswordView = document.getElementById('forgot-password-view');
+    const resetEmailInput = document.getElementById('reset-email');
 
     // Verification elements
     const verificationIcon = verificationView.querySelector('.verification-icon i');
     const verificationTitle = document.getElementById('verification-title');
     const verificationMessage = document.getElementById('verification-message');
 
-    // --- AUTHENTICATION DATA MANAGEMENT (Simulating Persistent JSON Store) ---
+    // --- AUTHENTICATION DATA MANAGEMENT ---
 
-    // Mock CSV data used as the guaranteed base dataset.
-    const MOCK_CSV_DATA = [
-        { codename: 'neo_one', email: 'neo@pixelphantoms.com', password_hash: 'matrix_secure_hash' },
-        { codename: 'test_agent', email: 'test@pixelphantoms.com', password_hash: 'password123_secure_hash' }
-    ];
+    // Variable to hold the data fetched from the hidden CSV file
+    let baseCsvAccounts = [];
 
     /**
-     * Retrieves all accounts, merging mock data with user-created data for robustness.
-     * This function guarantees that the mock accounts are always present.
+     * Fetches the Hidden CSV file to simulate backend database.
+     */
+    function loadBaseAccounts() {
+        // Path is relative to the HTML file (pages/login.html -> ../data/accounts.csv)
+        fetch('../data/accounts.csv')
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to load account database.");
+                return response.text();
+            })
+            .then(csvText => {
+                baseCsvAccounts = parseCSV(csvText);
+                console.log("System: Secure CSV Database Loaded.", baseCsvAccounts);
+                // Refresh local storage with new base data
+                getAccounts(); 
+            })
+            .catch(error => {
+                console.error("System Error: Could not access hidden CSV.", error);
+                // Fallback to empty if file is missing, prevents crash
+                baseCsvAccounts = [];
+            });
+    }
+
+    /**
+     * Parses standard CSV format into an array of account objects.
+     */
+    function parseCSV(csvText) {
+        const lines = csvText.trim().split('\n');
+        // Assume first row is header: codename,email,password_hash
+        // Start loop from 1 to skip header
+        const accounts = [];
+        
+        for (let i = 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (line) {
+                const [codename, email, password_hash] = line.split(',');
+                if (codename && email && password_hash) {
+                    accounts.push({
+                        codename: codename.trim(),
+                        email: email.trim(),
+                        password_hash: password_hash.trim()
+                    });
+                }
+            }
+        }
+        return accounts;
+    }
+
+    /**
+     * Retrieves all accounts, merging the "Hidden CSV" data with user-created data.
+     * This simulates a hybrid database (Static Base Data + Dynamic User Data).
      */
     function getAccounts() {
-        // 1. Get user-created accounts from Local Storage (our persistent JSON store)
+        // 1. Get user-created accounts from Local Storage
         const userStoredAccounts = JSON.parse(localStorage.getItem('user_accounts')) || [];
 
-        // 2. Create a map of mock accounts for quick lookup by codename
-        const mockCodenameSet = new Set(MOCK_CSV_DATA.map(acc => acc.codename));
+        // 2. Create a map of base CSV accounts to prevent duplicates
+        const baseCodenameSet = new Set(baseCsvAccounts.map(acc => acc.codename));
 
-        // 3. Filter the user-stored accounts to remove any duplicates of the mock accounts
+        // 3. Filter user accounts: if a user is already in CSV, prefer the CSV version (or exclude duplicate)
         const uniqueUserAccounts = userStoredAccounts.filter(userAcc =>
-            !mockCodenameSet.has(userAcc.codename)
+            !baseCodenameSet.has(userAcc.codename)
         );
 
-        // 4. Merge mock accounts (baseline) with unique user-created accounts
-        const finalAccounts = [...MOCK_CSV_DATA, ...uniqueUserAccounts];
+        // 4. Merge CSV accounts (Base) with User accounts (New)
+        const finalAccounts = [...baseCsvAccounts, ...uniqueUserAccounts];
 
-        // 5. Save the merged, guaranteed functional list back to Local Storage
-        // This ensures subsequent page loads start with correct data.
+        // 5. Sync the complete list to Local Storage for quick access during this session
         localStorage.setItem('user_accounts', JSON.stringify(finalAccounts));
 
         return finalAccounts;
     }
 
     function addAccount(codename, email, password) {
-        let accounts = getAccounts();
+        let accounts = getAccounts(); // Ensures we have the latest list
 
-        // Simple hash simulation (password + fixed string)
         const password_hash = password.trim() + '_secure_hash';
 
         const newAccount = {
@@ -76,17 +119,19 @@ document.addEventListener('DOMContentLoaded', () => {
             password_hash: password_hash
         };
 
-        // Push the new account to the array and save the list
-        accounts.push(newAccount);
-        localStorage.setItem('user_accounts', JSON.stringify(accounts));
+        // Note: We only push to the array intended for LocalStorage, 
+        // we cannot write back to the CSV file from the browser.
+        const userStoredAccounts = JSON.parse(localStorage.getItem('user_accounts')) || [];
+        userStoredAccounts.push(newAccount);
+        
+        // Update the storage
+        localStorage.setItem('user_accounts', JSON.stringify(userStoredAccounts));
     }
 
     function checkLogin(codename, password) {
         const accounts = getAccounts();
-        // Recalculate the expected hash from the input password
         const expected_hash = password.trim() + '_secure_hash';
 
-        // Check if a matching account exists
         return accounts.find(account =>
             account.codename === codename.toLowerCase().trim() &&
             account.password_hash === expected_hash
@@ -103,9 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
-    /**
-     * NEW FUNCTION: Checks if the email exists for Password Reset.
-     */
     function checkEmailExists(email) {
         const accounts = getAccounts();
         const lowerEmail = email.toLowerCase().trim();
@@ -138,10 +180,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- STATE MANAGEMENT ---
     function setActiveView(viewId) {
-        // Updated views array
         const views = [loginView, signupView, verificationView, forgotPasswordView];
         views.forEach(view => {
-            if (view && view.id === viewId) { // Check for existence before manipulating
+            if (view && view.id === viewId) {
                 view.classList.add('active');
             } else if (view) {
                 view.classList.remove('active');
@@ -154,32 +195,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const tabBtns = [loginTabBtn, signupTabBtn];
         tabBtns.forEach(btn => btn.classList.remove('active'));
 
-        // Clear all error messages (including new one)
         hideError('username-error');
         hideError('password-error');
         hideError('new-username-error');
         hideError('new-email-error');
         hideError('new-password-error');
-        hideError('reset-email-error'); // <-- NEW ERROR ID
+        if (resetEmailInput) hideError('reset-email-error');
 
-        // Function to toggle required state for all fields
         const toggleRequired = (login, signup, reset) => {
             usernameInput.required = login;
             passwordInput.required = login;
             newUsernameInput.required = signup;
             newEmailInput.required = signup;
             newPasswordInput.required = signup;
-            if (resetEmailInput) resetEmailInput.required = reset; // Check existence
+            if (resetEmailInput) resetEmailInput.required = reset;
         };
 
         if (mode === 'login') {
             loginTabBtn.classList.add('active');
             setActiveView('login-view');
             statusValue.textContent = 'STATUS_IDLE';
-
             toggleRequired(true, false, false);
-
-            // Clear non-login form values
             newUsernameInput.value = '';
             newEmailInput.value = '';
             newPasswordInput.value = '';
@@ -189,21 +225,15 @@ document.addEventListener('DOMContentLoaded', () => {
             signupTabBtn.classList.add('active');
             setActiveView('signup-view');
             statusValue.textContent = 'STATUS_REGISTRATION';
-
             toggleRequired(false, true, false);
-
-            // Clear non-signup form values
             usernameInput.value = '';
             passwordInput.value = '';
             if (resetEmailInput) resetEmailInput.value = '';
 
-        } else if (mode === 'forgot-password' && forgotPasswordView) { // <-- NEW MODE
+        } else if (mode === 'forgot-password' && forgotPasswordView) {
             setActiveView('forgot-password-view');
             statusValue.textContent = 'STATUS_RECOVERY_MODE';
-
             toggleRequired(false, false, true);
-
-            // Clear other form values
             usernameInput.value = '';
             passwordInput.value = '';
             newUsernameInput.value = '';
@@ -212,15 +242,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } else if (mode === 'verification') {
             setActiveView('verification-view');
-
-            // Disable all field validation during verification
             toggleRequired(false, false, false);
         }
     }
 
     // --- SCREENING/SIMULATION LOGIC ---
-
-    // Renamed the original function slightly for clarity, but its core logic remains the same
     function startAuthOrRegistrationSimulation(isLogin) {
         setAuthMode('verification');
         statusValue.textContent = isLogin ? 'AUTH_SCREENING_INIT' : 'AGENT_CREATION_INIT';
@@ -252,7 +278,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 800 + Math.random() * 400);
 
-        // Final result delay
         setTimeout(() => {
             clearInterval(interval);
 
@@ -260,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let failureReason = '';
 
             if (isLogin) {
-                // Check against the robust Local Storage database
+                // Check against the database (CSV + Local)
                 const account = checkLogin(usernameInput.value, passwordInput.value);
                 isSuccess = !!account;
                 if (!isSuccess) {
@@ -287,9 +312,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 4000 + Math.random() * 1000);
     }
 
-    /**
-     * NEW FUNCTION: Password Reset Simulation
-     */
     function startPasswordResetSimulation() {
         setAuthMode('verification');
         statusValue.textContent = 'RECOVERY_PROTOCOL_INIT';
@@ -316,10 +338,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 800 + Math.random() * 400);
 
-        // Final result delay
         setTimeout(() => {
             clearInterval(interval);
-
             const email = resetEmailInput.value;
             const isEmailFound = checkEmailExists(email);
 
@@ -343,7 +363,6 @@ document.addEventListener('DOMContentLoaded', () => {
         verificationMessage.textContent = isLogin ? 'Welcome back, Agent. Redirecting to Profile...' : 'Agent ID successfully created. Redirecting to Profile...';
         statusValue.textContent = 'STATUS_ONLINE';
 
-        // Redirect logic for Login and Sign Up
         if (isLogin || !isLogin) {
             const codename = isLogin ? usernameInput.value : newUsernameInput.value;
             setTimeout(() => {
@@ -377,12 +396,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- EVENT HANDLERS ---
-
     loginTabBtn.addEventListener('click', () => setAuthMode('login'));
     signupTabBtn.addEventListener('click', () => setAuthMode('signup'));
     backToLoginBtn.addEventListener('click', () => setAuthMode('login'));
 
-    // NEW EVENT HANDLER
     if (forgotPasskeyLink) {
         forgotPasskeyLink.addEventListener('click', (e) => {
             e.preventDefault();
@@ -390,38 +407,27 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
     authForm.addEventListener('submit', (e) => {
         e.preventDefault();
-
         let formValid = true;
         const currentView = loginView.classList.contains('active') ? 'login' :
             signupView.classList.contains('active') ? 'signup' :
-            forgotPasswordView.classList.contains('active') ? 'forgot' : null; // <-- NEW VIEW CHECK
+            forgotPasswordView.classList.contains('active') ? 'forgot' : null;
 
         if (currentView === 'login') {
             formValid &= validateField(usernameInput, 'username-error', 'Codename is required');
             formValid &= validateField(passwordInput, 'password-error', 'Passkey is required');
-
-            if (formValid) {
-                startAuthOrRegistrationSimulation(true);
-            }
+            if (formValid) startAuthOrRegistrationSimulation(true);
 
         } else if (currentView === 'signup') {
             formValid &= validateField(newUsernameInput, 'new-username-error', 'Codename is required');
             formValid &= validateField(newEmailInput, 'new-email-error', 'Email Key is required');
             formValid &= validateField(newPasswordInput, 'new-password-error', 'Passkey is required');
+            if (formValid) startAuthOrRegistrationSimulation(false);
 
-            if (formValid) {
-                startAuthOrRegistrationSimulation(false);
-            }
-
-        } else if (currentView === 'forgot') { // <-- NEW SUBMIT LOGIC
+        } else if (currentView === 'forgot') {
             formValid &= validateField(resetEmailInput, 'reset-email-error', 'Email Key is required for recovery');
-
-            if (formValid) {
-                startPasswordResetSimulation();
-            }
+            if (formValid) startPasswordResetSimulation();
         }
 
         if (!formValid) {
@@ -432,8 +438,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- INITIALIZATION ---
-
-    // Disable HTML5 form validation - we'll handle it manually
     authForm.setAttribute('novalidate', 'true');
 
     function initMatrixRain() {
@@ -442,13 +446,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        const katakana = 'アァカサタナハマヤラワガザダバパピビヂゾブヅエェケセテネヘメレヱゲゼデベペオォコソトノホモヨロヲゴゾドボポぷらーいむすたーわんきらーんあどみんいんぷっ';
+        const katakana = 'アァカサタナハマヤラワガザダバパピビヂゾブヅエェケセテネヘメレヱゲゼデベペオォコソトノホモヨロヲゴゾドボポ10100101';
         const fontSize = 16;
         const columns = canvas.width / fontSize;
         const drops = [];
-        for (let i = 0; i < columns; i++) {
-            drops[i] = 1;
-        }
+        for (let i = 0; i < columns; i++) drops[i] = 1;
+
         function draw() {
             ctx.fillStyle = `rgba(0, 0, 0, ${0.05 + Math.random() * 0.05})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -460,9 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const x = i * fontSize;
                 const y = drops[i] * fontSize;
                 ctx.fillText(text, x, y);
-                if (y * fontSize > canvas.height && Math.random() > 0.975) {
-                    drops[i] = 0;
-                }
+                if (y * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
                 drops[i]++;
             }
         }
@@ -470,12 +471,9 @@ document.addEventListener('DOMContentLoaded', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             drops.length = Math.floor(canvas.width / fontSize);
-            for (let i = 0; i < drops.length; i++) {
-                if(drops[i] === undefined) drops[i] = 0;
-            }
+            for (let i = 0; i < drops.length; i++) if(drops[i] === undefined) drops[i] = 0;
         });
-        let animationSpeed = 33 + Math.random() * 10;
-        setInterval(draw, animationSpeed);
+        setInterval(draw, 33);
     }
 
     function initHackerStats() {
@@ -485,38 +483,60 @@ document.addEventListener('DOMContentLoaded', () => {
             { label: "PING_LAT", unit: "ms", min: 5, max: 99, decimal: 0, isWarn: v => v > 50 },
             { label: "CORE_TEMP", unit: "°C", min: 35, max: 65, decimal: 0, isWarn: v => v > 60 }
         ];
-        let currentStats = STATS.map(s => ({
-            ...s,
-            value: s.min + Math.random() * (s.max - s.min)
-        }));
+        let currentStats = STATS.map(s => ({ ...s, value: s.min + Math.random() * (s.max - s.min) }));
 
         function updateHackerStats() {
             const overlay = document.getElementById('hacker-stats-overlay');
             if (!overlay) return;
-
             let html = '<p style="color:#00aaff; margin-bottom: 10px;">SYSTEM_DIAGNOSTICS:</p>';
-
             currentStats = currentStats.map(stat => {
                 const delta = (Math.random() * 10 - 5) / (stat.decimal ? 10 : 1);
                 let newValue = stat.value + delta;
                 newValue = Math.max(stat.min, Math.min(stat.max, newValue));
-
                 let displayValue = stat.decimal !== undefined ? newValue.toFixed(stat.decimal) : Math.round(newValue);
                 let statusClass = stat.isWarn(newValue) ? 'hacker-status-warn' : 'hacker-status-ok';
-
                 html += `<div class="hacker-stat-line"><span>${stat.label}</span><span class="${statusClass}">${displayValue}${stat.unit}</span></div>`;
                 return { ...stat, value: newValue };
             });
-
             overlay.innerHTML = html;
         }
         setInterval(updateHackerStats, 750);
         updateHackerStats();
     }
 
-
     initMatrixRain();
     initHackerStats();
     setAuthMode('login');
-    getAccounts(); // Initialize Local Storage
+    
+    // --- START DATA LOADING ---
+    loadBaseAccounts(); // <--- Loads the hidden CSV file
+});
+
+// Add to DOM Elements section
+const roleBtns = document.querySelectorAll('.role-btn');
+const roleInput = document.getElementById('selected-role');
+const usernameInput = document.getElementById('username');
+
+// Role Switching Logic
+roleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Toggle active class
+        roleBtns.forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+
+        // Update hidden role value
+        const role = btn.dataset.role;
+        roleInput.value = role;
+
+        // Change placeholders for UX
+        if (role === 'core_committee') {
+            usernameInput.placeholder = "Codename (Core Handle)";
+        } else {
+            usernameInput.placeholder = "Codename (Member ID)";
+        }
+    });
 });
