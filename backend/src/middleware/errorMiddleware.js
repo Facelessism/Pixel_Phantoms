@@ -65,16 +65,32 @@ const errorHandler = (err, req, res, next) => {
     errorResponse.stack = err.stack;
   }
 
-  // Log error details (in production, this would go to a logging service)
-  console.error('Error Details:', {
-    message: err.message,
-    statusCode,
-    stack: err.stack,
-    path: req.originalUrl,
-    method: req.method,
-    timestamp: errorResponse.timestamp,
-  });
+  // Determine if this is an operational (expected) error
+  const isOperationalError = err && err.isOperational === true;
 
+  // Log error details (in production, this would go to a logging/alerting service)
+  if (isOperationalError) {
+    console.warn('Operational error:', {
+      type: 'operational',
+      message: err.message,
+      statusCode,
+      stack: err.stack,
+      path: req.originalUrl,
+      method: req.method,
+      timestamp: errorResponse.timestamp,
+    });
+  } else {
+    console.error('Programmer or unknown error:', {
+      type: 'programmer',
+      message: err.message,
+      statusCode,
+      stack: err.stack,
+      path: req.originalUrl,
+      method: req.method,
+      timestamp: errorResponse.timestamp,
+    });
+    // In a real production setup, you might trigger alerts/notifications here.
+  }
   // Send the standardized error response
   res.status(statusCode).json(errorResponse);
 };
