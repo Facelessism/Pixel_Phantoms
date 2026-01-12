@@ -19,11 +19,30 @@ const {
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+function getCorsOrigin() {
+  const originsEnv = process.env.CORS_ORIGINS;
+
+  if (!originsEnv) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('CORS_ORIGINS environment variable must be set in production when credentials are enabled.');
+    }
+    // In non-production environments, allow all origins for convenience.
+    return '*';
+  }
+
+  return originsEnv
+    .split(',')
+    .map(origin => origin.trim())
+    .filter(Boolean);
+}
+
+const corsOrigin = getCorsOrigin();
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({
-  origin: process.env.CORS_ORIGINS?.split(',') || '*',
+  origin: corsOrigin,
   credentials: true,
 }));
 
