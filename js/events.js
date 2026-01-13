@@ -6,23 +6,41 @@ document.addEventListener('DOMContentLoaded', () => {
     const STORAGE_KEY = 'pixelphantoms_event_views';
     const DEBOUNCE_TIME = 3000; // 3 seconds
 
-    // Get all view data from localStorage
+    // In-memory fallback storage and flag for localStorage availability
+    let inMemoryViewData = {};
+    let localStorageAvailable = true;
+
+    // Get all view data from storage
     const getViewData = () => {
+      // If we've already determined localStorage is unavailable, use in-memory store
+      if (!localStorageAvailable) {
+        return inMemoryViewData;
+      }
+
       try {
         const data = localStorage.getItem(STORAGE_KEY);
         return data ? JSON.parse(data) : {};
       } catch (e) {
         console.warn('localStorage unavailable, using in-memory storage');
-        return {};
+        localStorageAvailable = false;
+        return inMemoryViewData;
       }
     };
 
-    // Save view data to localStorage
+    // Save view data to storage
     const saveViewData = (data) => {
+      // If localStorage is known to be unavailable, persist only in memory
+      if (!localStorageAvailable) {
+        inMemoryViewData = data;
+        return;
+      }
+
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
       } catch (e) {
-        console.warn('Could not save to localStorage');
+        console.warn('Could not save to localStorage, falling back to in-memory storage');
+        localStorageAvailable = false;
+        inMemoryViewData = data;
       }
     };
 
