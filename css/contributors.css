@@ -724,3 +724,334 @@
     text-align: center;
     transform: translateY(-2px);
 }
+
+/* ================= GITHUB STATS INTEGRATION ================= */
+
+/* GitHub Stats Container */
+.github-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 16px 0;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(0, 255, 163, 0.05), rgba(0, 204, 255, 0.05));
+    border-radius: 12px;
+    border: 1px solid rgba(0, 255, 163, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.github-stats:hover {
+    border-color: rgba(0, 255, 163, 0.3);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Individual Stat Item */
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.stat-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.stat-value {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--accent-color);
+    margin: 4px 0;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Loading Skeleton Animation */
+.stat-item.skeleton {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        background: rgba(255, 255, 255, 0.05);
+    }
+    50% {
+        background: rgba(255, 255, 255, 0.15);
+    }
+}
+
+/* Stat Error State */
+.stat-error {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 16px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.stat-error i {
+    margin-right: 8px;
+    color: #ff6b6b;
+}
+
+/* ================= RECENT REPOS SECTION ================= */
+
+.recent-repos {
+    background: #f6f8fa;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 16px;
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #e1e4e8;
+}
+
+/* Dark theme support */
+.hacker-theme .recent-repos,
+body.dark-mode .recent-repos {
+    background: rgba(30, 30, 30, 0.5);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.recent-repos h4 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.repo-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.repo-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+    border: 1px solid #e1e4e8;
+    transition: all 0.3s ease;
+}
+
+.hacker-theme .repo-item,
+body.dark-mode .repo-item {
+    background: rgba(50, 50, 50, 0.5);
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.repo-item:hover {
+    background: #f0f0f0;
+    border-color: var(--accent-color);
+    transform: translateX(4px);
+}
+
+.hacker-theme .repo-item:hover,
+body.dark-mode .repo-item:hover {
+    background: rgba(60, 60, 60, 0.7);
+}
+
+.repo-info a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.repo-info a:hover {
+    text-decoration: underline;
+}
+
+.repo-info p {
+    margin: 4px 0 0 0;
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.repo-meta {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-size: 12px;
+}
+
+.repo-language {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.repo-stars {
+    color: #f1c40f;
+    font-weight: 600;
+}
+
+.no-repos {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 13px;
+    padding: 16px;
+}
+
+/* ================= CONTRIBUTION CALENDAR SECTION ================= */
+
+.contribution-section {
+    margin-top: 20px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contribution-section h4 {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: var(--text-primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.github-calendar {
+    width: 100%;
+    overflow-x: auto;
+    padding: 8px 0;
+}
+
+.loading-text {
+    color: #6c757d;
+    font-size: 13px;
+    padding: 20px 0;
+    display: block;
+    text-align: center;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.calendar-error {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 13px;
+    padding: 20px;
+}
+
+/* Customize github-calendar library colors for dark theme */
+.hacker-theme .calendar.calendar,
+body.dark-mode .calendar.calendar {
+    color: var(--text-primary);
+}
+
+.hacker-theme .calendar .contrib-legend .legend,
+body.dark-mode .calendar .contrib-legend .legend {
+    color: var(--text-secondary);
+}
+
+/* ================= RESPONSIVE DESIGN ================= */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .github-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: 12px;
+    }
+    
+    .stat-icon {
+        font-size: 20px;
+    }
+    
+    .stat-value {
+        font-size: 16px;
+    }
+    
+    .stat-label {
+        font-size: 10px;
+    }
+    
+    .recent-repos {
+        max-height: 200px;
+    }
+    
+    .contribution-section {
+        padding: 12px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .github-stats {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .stat-item {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 12px;
+        padding: 10px;
+    }
+    
+    .stat-icon {
+        font-size: 24px;
+        margin-bottom: 0;
+    }
+    
+    .stat-value {
+        font-size: 18px;
+        margin: 0 8px 0 0;
+    }
+    
+    .stat-label {
+        font-size: 12px;
+    }
+    
+    .recent-repos {
+        max-height: 150px;
+        padding: 10px;
+    }
+    
+    .repo-item {
+        padding: 8px;
+    }
+    
+    .repo-info a {
+        font-size: 13px;
+    }
+    
+    .repo-info p {
+        font-size: 11px;
+    }
+}

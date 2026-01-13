@@ -324,7 +324,43 @@ See the full license in the [`LICENSE`](LICENSE) file.
 
 ---
 
-## 🔥 Contributors
+## � GitHub Integration
+
+The contributors page now features **live GitHub integration** to showcase team member activity and contributions!
+
+### 📊 Contributor Stats
+- **Public Repos:** Displays total public repositories
+- **Followers & Following:** Shows GitHub network stats
+- **Cached Data:** Results cached for 24 hours in localStorage
+- **Rate Limiting:** 60 API requests/hour (unauthenticated)
+- **Graceful Fallbacks:** Shows cached data if API limits are exceeded
+
+### 📈 Contribution Graph
+- **Yearly Heatmap:** Powered by [github-calendar](https://github.com/IonicaBizau/github-calendar) library
+- **Responsive Design:** Mobile-friendly contribution visualization
+- **Activity Insights:** See daily contribution patterns at a glance
+
+### 🔧 Adding New Contributors
+To display GitHub stats for a contributor:
+1. Add `data-github="username"` attribute to contributor card
+2. Replace `username` with their actual GitHub username
+3. Stats will automatically populate on page load
+
+```html
+<div class="contributor-card" data-github="SujalTripathi">
+  <!-- Stats auto-populate here -->
+</div>
+```
+
+### ⚡ Technical Details
+- Uses **GitHub REST API** (no authentication required for public data)
+- Fetches: repos, followers, following, recent projects
+- **Error Handling:** Network failures, rate limits, missing profiles
+- **Performance:** Parallel API requests with caching strategy
+
+---
+
+## �🔥 Contributors
 
 Thanks to all the amazing contributors who make this project better every day! 💖
 
