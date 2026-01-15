@@ -11,6 +11,7 @@ function renderFooter(basePath = '') {
 
   const footerHTML = `
     <footer class="site-footer dynamic-electronic">
+      <noscript class="no-js-note">Animations are disabled because JavaScript is turned off.</noscript>
       <div class="signal-grid" aria-hidden="true">
         <div class="signal-line horizontal"></div>
         <div class="signal-line vertical"></div>
@@ -108,6 +109,16 @@ function renderFooter(basePath = '') {
   `;
 
   placeholder.innerHTML = footerHTML;
+
+  // Load site-wide scripts dynamically (ensures scripts run after footer injection)
+  try {
+    const mainScript = document.createElement('script');
+    mainScript.src = basePath + 'js/main.js';
+    mainScript.defer = true;
+    document.body.appendChild(mainScript);
+  } catch (e) {
+    console.warn('Could not inject main.js dynamically', e);
+  }
 
   // ✅ Dynamic year set HERE (correct place)
   const yearSpan = document.getElementById('currentYear');

@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="css/home-gsap.css" />
     <link rel="stylesheet" href="css/cursor-effect.css" />
     <link rel="stylesheet" href="css/back-to-top.css" />
+    <link rel="stylesheet" href="css/animations.css" />
     <link rel="stylesheet" href="css/login.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap"
@@ -52,6 +53,7 @@
     </script>
 
     <main id="main-events" tabindex="-1">
+      <div class="page-transition-wrapper" data-page="events">
       <section class="hero events-hero">
         <h1>Campus Events</h1>
         <p>Workshops, hackathons, meetups, and more — all in one place.</p>
@@ -135,6 +137,7 @@
           </div>
         </div>
       </section>
+    </div>
     </main>
 
     <div id="footer-placeholder"></div>
@@ -185,6 +188,7 @@
       </div>
     </div>
 
+    <script src="js/page-transitions.js" defer></script>
     <script src="js/theme.js"></script>
     <script src="js/cursor-effect.js"></script>
     <script src="js/events.js"></script>

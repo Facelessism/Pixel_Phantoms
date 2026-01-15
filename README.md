@@ -350,6 +350,26 @@ Have an idea?
 
 ---
 
+## 🔧 Page Transitions (Issue #519)
+
+We've added an optional, performant page transition system using CSS + Vanilla JS to improve navigation UX across the site.
+
+Highlights:
+- Fade + subtle slide transitions (300ms default)
+- Respects users' prefers-reduced-motion setting
+- Works without JS (graceful degradation)
+- Optional loading indicator for slow fetches
+
+Files added/updated:
+- `css/animations.css` (new)
+- `js/page-transitions.js` (new)
+- Updated page wrappers: `index.html`, `about.html`, `contact.html`, `events.html`, `pages/*.html`
+- Init added to `js/main.js`
+
+To customize: change `--page-transition-duration` in CSS or pass options to `PageTransitions.init({ duration, type, scrollToTop, showLoadingIndicator })`.
+
+---
+
 ## 📌 License
 
 This project is licensed under the **MIT License**.

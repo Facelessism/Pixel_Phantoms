@@ -170,6 +170,9 @@ document.addEventListener('DOMContentLoaded', () => {
           event.registrationOpen && event.registrationLink && event.registrationLink.trim() !== '';
 
         const eventDate = normalizeDate(event.date);
+        const card = document.createElement('div');
+        card.className = 'event-card';
+
 
         let computedStatus = 'Upcoming';
         if (eventDate < today) computedStatus = 'Ended';
@@ -178,13 +181,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const statusClass = computedStatus.toLowerCase();
 
         // Generate unique event ID
-        const eventId = `event-${index + 1}`;
-        const viewCount = ViewCounter.getViewCount(eventId);
-        const formattedViews = ViewCounter.formatViewCount(viewCount);
+       
+        
 
         // Generate unique, stable event ID based on event data
         const eventIdBase = `${event.title || 'Untitled Event'}|${event.date}`;
         const eventId = `event-${encodeURIComponent(eventIdBase)}`;
+        const viewCount = ViewCounter.getViewCount(eventId);
+        const formattedViews = ViewCounter.formatViewCount(viewCount);
         card.setAttribute('tabindex', '0');
         card.setAttribute('data-event-id', eventId);
 
@@ -239,9 +243,12 @@ document.addEventListener('DOMContentLoaded', () => {
           ViewCounter.updateViewDisplay(eventId, newCount);
         });
 
-            <div class="event-views" aria-label="View count: ${formattedViews} view${viewCount !== 1 ? 's' : ''}">
-              <span class="view-icon"><i class="fa-solid fa-eye" aria-hidden="true"></i></span>
-              <span class="view-count" data-view-for="${eventId}">${formattedViews} view${viewCount === 1 && viewCount < 1000 ? '' : 's'}</span>
+        container.appendChild(card);  
+      });
+    });
+
+
+            
 
   /* ---------- Registration Modal Logic ---------- */
   (() => {
@@ -325,6 +332,9 @@ document.addEventListener('DOMContentLoaded', () => {
       registerForm.reset();
       inputs?.forEach(input => input.classList.remove('valid', 'invalid'));
       closeModal();
+      
     });
   })();
 });
+
+    
