@@ -59,15 +59,6 @@ function renderFooter(basePath = '') {
               </ul>
             </div>
 
-            <div class="footer-bottom">
-                <div class="footer-bottom-content">
-                    <p class="copyright">&copy; 2025 Pixel Phantoms. All rights reserved.</p>
-                    <div class="footer-bottom-links">
-                        <a href="${basePath}pages/privacy.html" class="bottom-link">Privacy</a> | 
-                        <a href="${basePath}pages/terms.html" class="bottom-link">Terms</a> | 
-                        <a href="${basePath}pages/tutorials.html" class="bottom-link">Tutorials</a>
-                    </div>
-                </div>
             <div class="link-group">
               <h3 class="link-group-title">Support</h3>
               <ul class="link-list">
@@ -94,7 +85,7 @@ function renderFooter(basePath = '') {
         <div class="footer-bottom">
           <div class="footer-bottom-content">
             <p class="copyright">
-              &copy; <span id="currentYear"></span> Pixel Phantoms. All rights reserved.
+              © 2026 Pixel Phantoms. All rights reserved.
             </p>
             <div class="footer-bottom-links">
               <a href="${basePath}pages/privacy.html" class="bottom-link">Privacy</a> | 
@@ -108,10 +99,4 @@ function renderFooter(basePath = '') {
   `;
 
   placeholder.innerHTML = footerHTML;
-
-  // ✅ Dynamic year set HERE (correct place)
-  const yearSpan = document.getElementById('currentYear');
-  if (yearSpan) {
-    yearSpan.textContent = new Date().getFullYear();
-  }
 }
