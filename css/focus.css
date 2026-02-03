@@ -1,0 +1,252 @@
+/* =========================================
+   FOCUS AREAS - MODULAR REFACTOR
+   ========================================= */
+
+.focus-areas {
+  padding: 100px 0;
+  background: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
+}
+
+/* 3-Column Layout for Desktop */
+.focus-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin: 50px 0;
+}
+
+/* Base Card Styling with Glassmorphism ported from about.css */
+.focus-card {
+  background: var(--card-bg);
+  padding: 35px 30px;
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+/* Interactive Top Border Consistency */
+.focus-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 4px;
+  background: linear-gradient(90deg, var(--accent-color), #0088cc);
+  transform: scaleX(0);
+  transition: transform 0.5s ease;
+}
+
+.focus-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 20px 40px rgba(0, 170, 255, 0.2);
+  border-color: var(--accent-color);
+}
+
+.focus-card:hover::before {
+  transform: scaleX(1);
+}
+
+/* Cyberpunk Icon Polish & Glow */
+.focus-icon {
+  font-size: 2.8rem;
+  margin: 0 auto 25px;
+  color: var(--accent-color);
+  transition: all 0.3s ease;
+}
+
+.focus-card:hover .focus-icon {
+  filter: drop-shadow(0 0 15px var(--accent-color));
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Terminal-Style Interaction */
+.focus-link {
+  display: inline-block;
+  margin-top: auto;
+  color: var(--accent-color);
+  text-decoration: none;
+  font-family: var(--font-hud);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.focus-link::after {
+  content: ' _';
+  animation: cursor-blink 1s infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.focus-link:hover {
+  color: #0aff9d; /* Terminal Green */
+  letter-spacing: 1px;
+}
+
+/* =========================================
+   RESPONSIVE OVERRIDES
+   ========================================= */
+
+@media (max-width: 768px) {
+  .focus-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .focus-areas {
+    padding: 60px 0;
+  }
+
+  .focus-card {
+    padding: 25px 20px;
+  }
+}
+
+/* Cyber-themed "Visit About Page" button */
+.focus-footer .cyber-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #00ff88;
+  background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 255, 200, 0.05));
+  border: 2px solid #00ff88;
+  border-radius: 4px;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+/* Animated background glow effect */
+.focus-footer .cyber-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+/* Glitch effect overlay */
+.focus-footer .cyber-link::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00ffaa;
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+
+/* Hover state */
+.focus-footer .cyber-link:hover {
+  color: #0d0d0d;
+  background: #00ff88;
+  border-color: #00ffaa;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 136, 0.6),
+    0 0 40px rgba(0, 255, 136, 0.4),
+    0 0 60px rgba(0, 255, 136, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Sweep animation on hover */
+.focus-footer .cyber-link:hover::before {
+  left: 100%;
+}
+
+/* Subtle glitch on hover */
+.focus-footer .cyber-link:hover::after {
+  opacity: 0.7;
+  animation: glitch-text 0.3s ease;
+}
+
+/* Active/click state */
+.focus-footer .cyber-link:active {
+  transform: translateY(0);
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+}
+
+/* Focus state for accessibility */
+.focus-footer .cyber-link:focus {
+  outline: 2px solid #00ff88;
+  outline-offset: 4px;
+}
+
+/* Icon animation */
+.focus-footer .cyber-link i {
+  transition: transform 0.3s ease;
+}
+
+.focus-footer .cyber-link:hover i {
+  transform: translateX(5px);
+}
+
+/* Glitch animation */
+@keyframes glitch-text {
+  0%, 100% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+}
+
+/* Pulse animation for emphasis */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+  }
+  50% {
+    box-shadow: 
+      0 0 20px rgba(0, 255, 136, 0.5),
+      0 0 30px rgba(0, 255, 136, 0.3);
+  }
+}
+
+/* Optional: Add pulse on page load */
+.focus-footer .cyber-link {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Stop pulse on hover */
+.focus-footer .cyber-link:hover {
+  animation: none;
+}
