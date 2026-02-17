@@ -182,7 +182,6 @@
 .contributors-section {
   display: flex;
   flex-direction: column;
-  align-items: center;
   text-align: center;
   padding: 80px 20px;
   background-color: var(--bg-primary);
@@ -190,6 +189,60 @@
   transition: background 0.3s ease;
   width: 100%;
   overflow-x: hidden;
+  align-items: stretch; 
+}
+
+/* ===============================
+   CLEAN CONTRIBUTORS GRID
+================================ */
+#contributors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  width: 100%;
+  padding: 0 60px;
+  box-sizing: border-box;
+}
+
+/* Remove width restriction from cards */
+.contributor-card {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+/* Responsive control */
+
+@media (min-width: 1400px) {
+  .contributors-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  #contributors-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  #contributors-grid {
+    grid-template-columns: 1fr;
+    padding: 0 20px;
+  }
+}
+
+@media (min-width: 500px) and (max-width: 767px) {
+  .contributors-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 499px) {
+  .contributors-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .section-header {
@@ -267,43 +320,17 @@
 
 .top-contributors {
   width: 100%;
-  max-width: 1300px;
-  /* Same as your lead-container */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   margin: 150px auto 80px auto;
-}
-
-/* --- TOP CONTRIBUTORS GRID (FULL PAGE WIDTH) --- */
-.contributors-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-content: center;
-  gap: 60px;
-  width: fit-content;
-  max-width: 1800px;
-  margin: 60px 60px;
-
-  flex-wrap: wrap;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px;
+  padding: 0 40px;
 }
 
 #top-contributors {
   text-align: center;
   width: 100%;
   margin-bottom: 20px;
-}
-
-/* --- TOP CONTRIBUTORS GRID --- */
-.contributors-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-  width: 100%;
-  max-width: 1600px;
-  margin: 60px auto;
-  padding: 0 40px;
-  box-sizing: border-box;
 }
 
 .contributor-card:hover {
@@ -770,10 +797,6 @@ body.light-mode .heatmap-cell.future-cell {
 
 /* --- RESPONSIVENESS --- */
 @media (max-width: 1000px) {
-  .contributors-grid {
-    grid-template-columns: 1fr;
-    max-width: 600px;
-  }
 
   .project-lead-card {
     padding: 40px 20px;
@@ -973,19 +996,9 @@ body.light-mode .heatmap-cell.future-cell {
   color: var(--accent-color);
 }
 
-/* --- CONTRIBUTORS GRID --- */
-.contributors-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 25px;
-  margin-bottom: 40px;
-  padding: 0 28px;
-}
-
 /* Base Card Style */
 .contributor-card {
   width: 100%;
-  max-width: 500px;
   background: var(--card-bg);
   border: 1px solid var(--border-color);
   border-radius: 32px;
@@ -996,7 +1009,6 @@ body.light-mode .heatmap-cell.future-cell {
   box-shadow: var(--shadow-main);
   box-sizing: border-box;
   transition: transform 0.3s ease;
-  margin: 0 auto;
   cursor: pointer;
   gap: 16px;
   position: relative;
@@ -1987,12 +1999,6 @@ body.dark-mode .repo-item {
 }
 
 @media (min-width: 1445px) and (max-width: 2560px) {
-  .contributors-grid {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
-    padding: 0 32px;
-  }
-
   .contributors-section {
     padding: 50px 32px;
   }
@@ -2004,12 +2010,6 @@ body.dark-mode .repo-item {
 }
 
 @media (min-width: 1028px) and (max-width: 1444px) {
-  .contributors-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 0 32px;
-  }
-
   .contributors-section {
     padding: 50px 32px;
   }
@@ -2021,12 +2021,6 @@ body.dark-mode .repo-item {
 }
 
 @media (min-width: 769px) and (max-width: 1027px) {
-  .contributors-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    padding: 0 32px;
-  }
-
   .contributors-section {
     padding: 50px 32px;
   }
@@ -2042,12 +2036,6 @@ body.dark-mode .repo-item {
     padding: 42px 20px;
   }
 
-  .contributors-grid {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 18px;
-    padding: 0 18px;
-  }
-
   .contributor-card {
     padding: 18px;
   }
@@ -2061,12 +2049,6 @@ body.dark-mode .repo-item {
 @media (max-width: 480px) {
   .contributors-section {
     padding: 32px 12px;
-  }
-
-  .contributors-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    padding: 0 12px;
   }
 
   .contributor-card {
@@ -2822,9 +2804,8 @@ body.dark-mode .calendar .contrib-legend .legend {
   outline-offset: 6px;
 }
 
-  .roadmap-step:hover {
-    transform: none !important;
-  }
+.roadmap-step:hover {
+  transform: none !important;
 }
 
 /* Activity Feed Container */
@@ -3048,4 +3029,12 @@ body.light-mode .repo-empty-state i {
 
 [data-theme="dark"] #activity-list .activity-item:hover .commit-date {
   color: var(--activity-accent);
+}
+
+/* FORCE FULL WIDTH FOR CONTRIBUTORS PAGE */
+.main-content,
+.page-transition-wrapper,
+.contributors-section {
+  width: 100% !important;
+  max-width: 100% !important;
 }
