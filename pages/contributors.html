@@ -174,13 +174,26 @@
 </section>
 
         <section aria-labelledby="recent-activity">
-          <h2 id="recent-activity" class="mt-large">Recent Contribution Activity</h2>
-          <div class="activity-container" id="activity-list">
-            <div class="loading-text">
-              <i class="fas fa-spinner fa-spin"></i> Fetching latest commits…
-            </div>
-          </div>
-        </section>
+  <div class="activity-header">
+    <h2 id="recent-activity" class="mt-large">Recent Contribution Activity</h2>
+
+    <!-- 🔽 NEW: Filter Controls -->
+    <div class="activity-filters">
+      <select id="activity-filter">
+        <option value="all">All</option>
+        <option value="merge">Merges</option>
+        <option value="feat">Features</option>
+        <option value="fix">Fixes</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="activity-container" id="activity-list">
+    <div class="loading-text">
+      <i class="fas fa-spinner fa-spin"></i> Fetching latest commits…
+    </div>
+  </div>
+</section>
 
         <!-- ================= CONTRIBUTION ROADMAP CTA ================= -->
         <section class="contribute-cta" aria-labelledby="contribute">

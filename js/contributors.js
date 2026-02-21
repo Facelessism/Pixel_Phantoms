@@ -471,16 +471,33 @@ async function fetchRecentActivity() {
     if (activityList) {
       activityList.innerHTML = '';
       commits.forEach(item => {
-        const date = new Date(item.commit.author.date).toLocaleDateString();
-        const row = document.createElement('div');
-        row.className = 'activity-item';
-        row.innerHTML = `
-                    <div class="activity-marker"></div>
-                    <div class="commit-msg"><span style="color: var(--accent-color)">${item.commit.author.name}</span>: ${item.commit.message}</div>
-                    <div class="commit-date">${date}</div>
-                `;
-        activityList.appendChild(row);
-      });
+  const message = item.commit.message.toLowerCase();
+  const date = new Date(item.commit.author.date).toLocaleDateString();
+
+  // Detect activity type for visual hierarchy
+  let type = 'commit';
+  if (message.includes('merge')) type = 'merge';
+  else if (message.includes('fix')) type = 'fix';
+  else if (message.includes('feat')) type = 'feat';
+
+  const row = document.createElement('div');
+  row.className = 'activity-item';
+  row.setAttribute('data-type', type);
+
+  row.innerHTML = `
+    <div class="activity-marker"></div>
+    <div class="commit-msg">
+      <span style="color: var(--accent-color); font-weight:600;">
+        ${item.commit.author.name}
+      </span>
+      • <span class="activity-badge">${type.toUpperCase()}</span>
+      : ${item.commit.message}
+    </div>
+    <div class="commit-date">${date}</div>
+  `;
+
+  activityList.appendChild(row);
+});
     }
   } catch (error) { console.log('Activity feed unavailable'); }
 }
@@ -874,6 +891,27 @@ document.addEventListener("DOMContentLoaded", () => {
         card.style.display = "none";
       }
     }
+  });
+});
+
+// Activity Filter Logic
+document.addEventListener("DOMContentLoaded", () => {
+  const filter = document.getElementById("activity-filter");
+  const activityList = document.getElementById("activity-list");
+
+  if (!filter || !activityList) return;
+
+  filter.addEventListener("change", () => {
+    const type = filter.value;
+    const items = activityList.querySelectorAll(".activity-item");
+
+    items.forEach(item => {
+      if (type === "all" || item.dataset.type === type) {
+        item.style.display = "";
+      } else {
+        item.style.display = "none";
+      }
+    });
   });
 });
 // Note: initGitHubIntegrations is now called from renderContributors()
