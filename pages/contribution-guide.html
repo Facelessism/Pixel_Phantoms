@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Learn how to contribute to Pixel Phantoms — setup instructions, contribution rules, and pull request guidelines for our open-source community."
+    />
     <title>Pixel Phantoms | Contributing</title>
 
     <!-- GLOBAL STYLES -->
@@ -62,7 +66,7 @@
             <div class="code-wrapper">
               <div class="code-block">
                 <button class="copy-btn" data-copy="clone-code">
-                  <i class="fa-regular fa-copy"></i>
+                  <i class="fa-regular fa-copy" aria-hidden="true"></i>
                 </button>
                 <pre><code id="clone-code">git clone https://github.com/sayeeg-11/Pixel_Phantoms.git
 cd pixel-phantoms</code></pre>
@@ -73,7 +77,7 @@ cd pixel-phantoms</code></pre>
             <div class="code-wrapper">
               <div class="code-block">
                 <button class="copy-btn" data-copy="branch-code">
-                  <i class="fa-regular fa-copy"></i>
+                  <i class="fa-regular fa-copy" aria-hidden="true"></i>
                 </button>
                 <pre><code id="branch-code">git checkout -b feature-your-feature-name</code></pre>
               </div>
@@ -90,12 +94,12 @@ cd pixel-phantoms</code></pre>
 
             <div class="setup-grid">
               <div class="setup-card">
-                <i class="fas fa-tools"></i>
+                <i class="fas fa-tools" aria-hidden="true"></i>
                 <h4>Requirements</h4>
                 <p>Any code editor (VS Code recommended) and basic HTML/CSS/JS knowledge.</p>
               </div>
               <div class="setup-card">
-                <i class="fas fa-laptop-code"></i>
+                <i class="fas fa-laptop-code" aria-hidden="true"></i>
                 <h4>Run Locally</h4>
                 <p>
                   Open <code>index.html</code> directly or use the
@@ -113,7 +117,7 @@ cd pixel-phantoms</code></pre>
             </div>
             <div class="domains-grid">
               <div class="domain-box">
-                <h4><i class="fas fa-code"></i> Code</h4>
+                <h4><i class="fas fa-code" aria-hidden="true"></i> Code</h4>
                 <ul>
                   <li>Improve UI/UX & Animations</li>
                   <li>Fix responsiveness issues</li>
@@ -121,7 +125,7 @@ cd pixel-phantoms</code></pre>
                 </ul>
               </div>
               <div class="domain-box">
-                <h4><i class="fas fa-pen-nib"></i> Content</h4>
+                <h4><i class="fas fa-pen-nib" aria-hidden="true"></i> Content</h4>
                 <ul>
                   <li>Update page text</li>
                   <li>Update club details</li>
@@ -129,7 +133,7 @@ cd pixel-phantoms</code></pre>
                 </ul>
               </div>
               <div class="domain-box">
-                <h4><i class="fas fa-paint-brush"></i> Design</h4>
+                <h4><i class="fas fa-paint-brush" aria-hidden="true"></i> Design</h4>
                 <ul>
                   <li>Add banners & logos</li>
                   <li>Create event posters</li>
@@ -146,7 +150,7 @@ cd pixel-phantoms</code></pre>
               <h2>Contribution Rules</h2>
             </div>
             <div class="warning-box">
-              <i class="fas fa-exclamation-triangle"></i>
+              <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
               <span>
                 <strong>Crucial:</strong> Do not commit <code>node_modules</code> or
                 <code>.vscode</code>. Keep media files small.
@@ -157,7 +161,7 @@ cd pixel-phantoms</code></pre>
             <div class="code-wrapper">
               <div class="code-block">
                 <button class="copy-btn" data-copy="commit-code">
-                  <i class="fa-regular fa-copy"></i>
+                  <i class="fa-regular fa-copy" aria-hidden="true"></i>
                 </button>
                 <pre><code id="commit-code">Add: New gallery section
 Fix: Navbar alignment issue
@@ -176,7 +180,7 @@ Refactor: CSS for responsiveness</code></pre>
             <div class="code-wrapper">
               <div class="code-block">
                 <button class="copy-btn" data-copy="pr-code">
-                  <i class="fa-regular fa-copy"></i>
+                  <i class="fa-regular fa-copy" aria-hidden="true"></i>
                 </button>
                 <pre><code id="pr-code">git add .
 git commit -m "Describe your change clearly"
@@ -184,7 +188,7 @@ git push origin feature-your-feature-name</code></pre>
               </div>
             </div>
             <div class="pr-note">
-              <i class="fas fa-info-circle"></i>
+              <i class="fas fa-info-circle" aria-hidden="true"></i>
               <strong>Note:</strong> Always include <strong>before/after screenshots</strong> for
               any UI changes in your PR.
             </div>
@@ -245,9 +249,9 @@ git push origin feature-your-feature-name</code></pre>
           const id = btn.getAttribute('data-copy');
           const text = document.getElementById(id).innerText;
           navigator.clipboard.writeText(text);
-          btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+          btn.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i>';
           setTimeout(() => {
-            btn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+            btn.innerHTML = '<i class="fa-regular fa-copy" aria-hidden="true"></i>';
           }, 1000);
         });
       });
