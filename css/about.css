@@ -257,14 +257,52 @@ body.light-mode .motto-subtitle {
   animation: fadeInUp 0.8s ease-out 0.2s both;
 }
 
-.definition-card::before {
+/* =========================================
+   WHO WE ARE – Animated Vertical Accent
+========================================= */
+
+.definition-card,
+.who-is-this-for {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hidden vertical accent line */
+.definition-card::before,
+.who-is-this-for::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(to bottom, var(--accent-color), #0088cc);
+  background: linear-gradient(
+    to bottom,
+    var(--accent-color),
+    #0088cc
+  );
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.4s ease;
+}
+
+/* Animate on hover */
+.definition-card:hover::before,
+.who-is-this-for:hover::before {
+  transform: scaleY(1);
+}
+
+.definition-card,
+.who-is-this-for {
+  transition: 
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.definition-card:hover,
+.who-is-this-for:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(0, 170, 255, 0.15);
 }
 
 .definition-text {
@@ -914,18 +952,4 @@ body.light-mode .motto-subtitle {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
-}
-
-.stat-number {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  transition: all 0.4s ease;
-}
-
-.stat-glow {
-  color: var(--accent-color);
-  text-shadow:
-    0 0 8px var(--accent-color),
-    0 0 20px rgba(0, 170, 255, 0.5);
 }
