@@ -159,26 +159,36 @@
               </span>
             </div>
 
+            <div class="sort-container">
+              <div class="sort-label"><i class="fas fa-sort-amount-down"></i> SORT_SEQUENCE:</div>
+              <select id="project-sort" class="cyber-select">
+                <option value="newest">NEWEST_FIRST</option>
+                <option value="oldest">OLDEST_FIRST</option>
+                <option value="alphabetical">ALPHABETICAL_A_Z</option>
+                <option value="reverse-alpha">ALPHABETICAL_Z_A</option>
+              </select>
+            </div>
+
             <div class="filter-container">
-  <button class="btn-glitch-filter active" data-filter="all">
-    <span class="text">ALL_SYSTEMS</span><span class="decoration"></span>
-  </button>
-  <button class="btn-glitch-filter" data-filter="web">
-    <span class="text">WEB_DEV</span><span class="decoration"></span>
-  </button>
-  <button class="btn-glitch-filter" data-filter="embedded">
-    <span class="text">EMBEDDED</span><span class="decoration"></span>
-  </button>
-  <button class="btn-glitch-filter" data-filter="programming">
-    <span class="text">PROGRAMMING</span><span class="decoration"></span>
-  </button>
-  <button class="btn-glitch-filter" data-filter="design">
-    <span class="text">DESIGN_UI</span><span class="decoration"></span>
-  </button>
-  <button class="filter-mobile-toggle" id="mobile-filter-toggle">
-    <i class="fas fa-filter"></i> More Filters
-  </button>
-</div>
+              <button class="btn-glitch-filter active" data-filter="all">
+                <span class="text">ALL_SYSTEMS</span><span class="decoration"></span>
+              </button>
+              <button class="btn-glitch-filter" data-filter="web">
+                <span class="text">WEB_DEV</span><span class="decoration"></span>
+              </button>
+              <button class="btn-glitch-filter" data-filter="embedded">
+                <span class="text">EMBEDDED</span><span class="decoration"></span>
+              </button>
+              <button class="btn-glitch-filter" data-filter="programming">
+                <span class="text">PROGRAMMING</span><span class="decoration"></span>
+              </button>
+              <button class="btn-glitch-filter" data-filter="design">
+                <span class="text">DESIGN_UI</span><span class="decoration"></span>
+              </button>
+              <button class="filter-mobile-toggle" id="mobile-filter-toggle">
+                <i class="fas fa-filter"></i> More Filters
+              </button>
+            </div>
 
             <div class="filter-results" id="filter-results">
               <div class="results-count">
@@ -192,12 +202,12 @@
 
             <div class="filter-dropdown">
               <select id="mobile-filter-select">
-  <option value="all">All Projects</option>
-  <option value="web">Web Development</option>
-  <option value="embedded">Embedded Systems</option>
-  <option value="programming">Programming</option>
-  <option value="design">Design</option>
-</select>
+                <option value="all">All Projects</option>
+                <option value="web">Web Development</option>
+                <option value="embedded">Embedded Systems</option>
+                <option value="programming">Programming</option>
+                <option value="design">Design</option>
+              </select>
             </div>
           </div>
         </section>
@@ -205,271 +215,18 @@
         <section class="content project-matrix-section">
           <div class="container">
             <div class="projects-grid" id="projects-grid">
-              <article
-                class="cyber-card project-card"
-                data-category="web"
-                data-tilt
-                data-difficulty="beginner"
-                data-tech="javascript"
-                data-status="active"
-                data-new="false"
-                data-full-desc="Pixel Phantoms Official is the main portal for our community. It features a fully responsive design, custom glassmorphism effects, and dynamic leaderboards. Built with core web technologies to ensure maximum performance and accessibility."
-                data-live-url="https://pixelphantoms.live"
-              >
-                <div class="card-border-top"></div>
-                <div class="card-image-wrapper">
-                  <img
-                    src="https://picsum.photos/seed/pixel1/600/400"
-                    alt="Pixel Phantoms Website"
-                    loading="lazy"
-                  />
-                  <div class="glitch-overlay"></div>
-                  <div class="scan-line"></div>
-                </div>
-                <div class="difficulty-badge difficulty-beginner">Beginner</div>
-                <div class="card-content">
-                  <div class="card-header">
-                    <span class="project-id">#WEB_001</span>
-                    <span class="status-dot online"></span>
-                  </div>
-                  <h3>Pixel_Phantoms_Official</h3>
-                  <p>
-                    The central command hub. A dynamic community platform featuring live
-                    leaderboards and dark mode protocols.
-                  </p>
-                  <div class="tech-stack-terminal">
-                    <span>[HTML5]</span>
-                    <span>[CSS3]</span>
-                    <span>[JS_Core]</span>
-                  </div>
-                  <div class="card-actions">
-                    <button class="btn-terminal">View_Details ></button>
-                    <a class="icon-link disabled" tabindex="-1"><i class="fab fa-github"></i></a>
-                  </div>
-                </div>
-              </article>
-
-              <article
-                class="cyber-card project-card"
-                data-category="programming"
-                data-tilt
-                data-difficulty="advanced"
-                data-tech="python"
-                data-status="active"
-                data-new="false"
-                data-full-desc="Phantom Bot V2 is our next-gen Discord automation tool. It uses advanced NLP models to understand community intent, automate moderation, and provide real-time updates on community events and protocols."
-                data-live-url="#"
-              >
-                <div class="card-border-top"></div>
-                <div class="card-image-wrapper">
-                  <img src="https://picsum.photos/seed/ai_robo/600/400" alt="AI Chatbot" />
-                  <div class="glitch-overlay"></div>
-                  <div class="scan-line"></div>
-                </div>
-                <div class="difficulty-badge difficulty-advanced">Advanced</div>
-                <div class="card-content">
-                  <div class="card-header">
-                    <span class="project-id">#AI_099</span>
-                    <span class="status-dot processing"></span>
-                  </div>
-                  <h3>Phantom_Bot_V2</h3>
-                  <p>
-                    An autonomous discord sentinel utilizing NLP to moderate comms and manage event
-                    protocols.
-                  </p>
-                  <div class="tech-stack-terminal">
-                    <span>[Python]</span>
-                    <span>[TensorFlow]</span>
-                    <span>[Discord.py]</span>
-                  </div>
-                  <div class="card-actions">
-                    <button class="btn-terminal">View_Details ></button>
-                    <a class="icon-link disabled" tabindex="-1"><i class="fab fa-github"></i></a>
-                  </div>
-                </div>
-              </article>
-
-              <article
-                class="cyber-card project-card"
-                data-category="app"
-                data-tilt
-                data-difficulty="intermediate"
-                data-tech="dart"
-                data-status="active"
-                data-new="true"
-                data-full-desc="Campus Connect is the ultimate mobile companion for students. It streamlines attendance tracking, resource sharing, and campus communications into a single, intuitive interface. Built with Flutter for a seamless cross-platform experience."
-                data-live-url="#"
-              >
-                <div class="card-border-top"></div>
-                <div class="card-image-wrapper">
-                  <img
-                    src="https://picsum.photos/seed/app_dev/600/400"
-                    alt="Campus App"
-                    loading="lazy"
-                  />
-                  <div class="glitch-overlay"></div>
-                  <div class="scan-line"></div>
-                </div>
-                <div class="difficulty-badge difficulty-intermediate">Intermediate</div>
-                <div class="card-content">
-                  <div class="card-header">
-                    <span class="project-id">#MOB_404</span>
-                    <span class="status-dot online"></span>
-                  </div>
-                  <h3>Campus_Connect_App</h3>
-                  <p>
-                    Mobile interface for student tracking systems. Attendance, notes, and canteen
-                    logistics in real-time.
-                  </p>
-                  <div class="tech-stack-terminal">
-                    <span>[Flutter]</span>
-                    <span>[Firebase]</span>
-                    <span>[Dart]</span>
-                  </div>
-                  <div class="card-actions">
-                    <button class="btn-terminal">View_Details ></button>
-                    <a class="icon-link disabled" tabindex="-1"><i class="fab fa-github"></i></a>
-                  </div>
-                </div>
-              </article>
-
-              <article
-                class="cyber-card project-card"
-                data-category="embedded"
-                data-tilt
-                data-difficulty="advanced"
-                data-tech="cpp"
-                data-status="warning"
-                data-new="false"
-                data-full-desc="Smart Lab Matrix is an integrated IoT environment. It uses a network of sensors and actuators to manage laboratory conditions, optimizing for both safety and energy efficiency. The system features a custom C++ kernel for low-latency operations."
-                data-live-url="../pages/hardware-roadmap.html"
-              >
-                <div class="card-border-top"></div>
-                <div class="card-image-wrapper">
-                  <img
-                    src="https://picsum.photos/seed/iot/600/400"
-                    alt="IoT Smart Home"
-                    loading="lazy"
-                  />
-                  <div class="glitch-overlay"></div>
-                  <div class="scan-line"></div>
-                </div>
-                <div class="difficulty-badge difficulty-advanced">Advanced</div>
-                <div class="card-content">
-                  <div class="card-header">
-                    <span class="project-id">#IOT_X1</span>
-                    <span class="status-dot warning"></span>
-                  </div>
-                  <h3>Smart_Lab_Matrix</h3>
-                  <p>
-                    Automated environment control system. Sensors dictate lighting and atmospheric
-                    conditions.
-                  </p>
-                  <div class="tech-stack-terminal">
-                    <span>[Arduino]</span>
-                    <span>[C++]</span>
-                    <span>[Sensors]</span>
-                  </div>
-                  <div class="card-actions">
-                    <button class="btn-terminal">View_Details ></button>
-                    <a class="icon-link disabled" tabindex="-1"><i class="fab fa-github"></i></a>
-                  </div>
-                </div>
-              </article>
-
-              <article
-                class="cyber-card project-card"
-                data-category="programming"
-                data-tilt
-                data-difficulty="intermediate"
-                data-tech="javascript"
-                data-status="active"
-                data-new="false"
-                data-full-desc="Crypto Tracker Dash provides high-fidelity market data at your fingertips. It aggregates data from multiple decentralized exchanges and presents it through beautiful, interactive charts. Perfect for monitoring volatility across the ecosystem."
-                data-live-url="#"
-              >
-                <div class="card-border-top"></div>
-                <div class="card-image-wrapper">
-                  <img
-                    src="https://picsum.photos/seed/crypto/600/400"
-                    alt="Crypto Dashboard"
-                    loading="lazy"
-                  />
-                  <div class="glitch-overlay"></div>
-                  <div class="scan-line"></div>
-                </div>
-                <div class="difficulty-badge difficulty-intermediate">Intermediate</div>
-                <div class="card-content">
-                  <div class="card-header">
-                    <span class="project-id">#WEB_CRYPTO</span>
-                    <span class="status-dot online"></span>
-                  </div>
-                  <h3>Crypto_Tracker_Dash</h3>
-                  <p>
-                    Real-time visualization of decentralized currency markets via public API
-                    streams.
-                  </p>
-                  <div class="tech-stack-terminal">
-                    <span>[React]</span>
-                    <span>[Chart.js]</span>
-                    <span>[REST_API]</span>
-                  </div>
-                  <div class="card-actions">
-                    <button class="btn-terminal">View_Details ></button>
-                    <a class="icon-link disabled" tabindex="-1"><i class="fab fa-github"></i></a>
-                  </div>
-                </div>
-              </article>
-
-              <article
-                class="cyber-card project-card"
-                data-category="programming"
-                data-tilt
-                data-difficulty="beginner"
-                data-tech="python"
-                data-status="active"
-                data-new="false"
-                data-full-desc="The Sign Language Recognizer uses computer vision to break communication barriers. By analyzing hand gestures in real-time, it translates sign language into text, making digital interaction more accessible for the deaf and hard-of-hearing community."
-                data-live-url="#"
-              >
-                <div class="card-border-top"></div>
-                <div class="card-image-wrapper">
-                  <img
-                    src="https://picsum.photos/seed/vision/600/400"
-                    alt="Computer Vision"
-                    loading="lazy"
-                  />
-                  <div class="glitch-overlay"></div>
-                  <div class="scan-line"></div>
-                </div>
-                <div class="difficulty-badge difficulty-beginner">Beginner</div>
-                <div class="card-content">
-                  <div class="card-header">
-                    <span class="project-id">#CV_EYE</span>
-                    <span class="status-dot processing"></span>
-                  </div>
-                  <h3>Sign_Lang_Recognizer</h3>
-                  <p>
-                    Computer vision protocol interpreting manual communication into digital text
-                    streams.
-                  </p>
-                  <div class="tech-stack-terminal">
-                    <span>[OpenCV]</span>
-                    <span>[Python]</span>
-                    <span>[PyTorch]</span>
-                  </div>
-                  <div class="card-actions">
-                    <button class="btn-terminal">View_Details ></button>
-                    <a href="#" class="icon-link"><i class="fab fa-github"></i></a>
-                  </div>
-                </div>
-              </article>
+              <!-- Projects will be loaded dynamically from projects.json -->
+              <div class="loader-container">
+                <div class="loader-spinner"></div>
+                <p>Establishing secure data uplink...</p>
+              </div>
             </div>
           </div>
         </section>
       </div>
     </div>
 
+    <!-- Project Details Modal -->
     <!-- Project Details Modal -->
     <div id="project-modal" class="project-modal">
       <div class="modal-content">
@@ -519,6 +276,7 @@
 
     <script src="../js/projects.js"></script>
     <script src="../js/project-modal.js"></script>
+    <script src="../js/project-loader.js"></script>
     <script src="../js/copy-clipboard.js"></script>
     <script src="../js/projects-filters.js"></script>
     <script src="../js/favorites.js"></script>
