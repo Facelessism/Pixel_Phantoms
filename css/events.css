@@ -11,9 +11,9 @@
 }
 
 [data-theme='dark'] {
-  --card-bg: #1a1d25 !important;
-  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
-  --text-primary: #f9fafb !important;
+  --card-bg: #121212 !important;
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
+  --text-primary: #f8fafc !important;
   --text-secondary: #cbd5e1 !important;
   --text-muted: #94a3b8 !important;
   --border-color: #1e293b !important;
@@ -1210,10 +1210,10 @@
 }
 
 [data-theme='dark'] .event-card {
-  background: #1a1d25;
+  background: #121212;
   color: #e5e7eb;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+  border: 1px solid #1e293b;
 }
 
 [data-theme='dark'] .event-card:hover,
@@ -1221,13 +1221,18 @@
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
 }
 
+[data-theme='dark'] .event-card.upcoming {
+  border-left-color: #475569;
+}
+
 [data-theme='dark'] .event-title {
   color: #f9fafb;
 }
 
 [data-theme='dark'] .event-status.upcoming {
-  background: rgba(59, 130, 246, 0.15);
-  color: #93c5fd;
+  background: rgba(148, 163, 184, 0.1);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.2);
 }
 
 [data-theme='dark'] .event-status.today {
@@ -1266,8 +1271,11 @@
 }
 
 [data-theme='dark'] .btn-register.disabled {
-  background: #1f2933;
-  color: #9ca3af;
+  background: rgba(31, 41, 51, 0.4);
+  color: #64748b;
+  border: 1px solid #2d3748;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 [data-theme='dark'] .event-card.ended {
