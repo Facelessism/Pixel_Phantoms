@@ -10,13 +10,13 @@
   --border-color: #e5e7eb;
 }
 
-body.dark-mode {
-  --card-bg: #0f172a;
-  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  --text-primary: #f9fafb;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
-  --border-color: #1e293b;
+[data-theme='dark'] {
+  --card-bg: #121212 !important;
+  --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
+  --text-primary: #f8fafc !important;
+  --text-secondary: #cbd5e1 !important;
+  --text-muted: #94a3b8 !important;
+  --border-color: #1e293b !important;
 }
 
 /* Hero Section */
@@ -24,7 +24,7 @@ body.dark-mode {
   text-align: center;
   background: var(--bg-primary);
 }
- 
+
 /* ================================
    Event List Layout
 ================================ */
@@ -338,9 +338,11 @@ body.dark-mode {
   0% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.1);
   }
+
   100% {
     transform: scale(1);
   }
@@ -863,6 +865,7 @@ body.dark-mode {
   100% {
     transform: translate(-50%, -50%) translateY(0);
   }
+
   50% {
     transform: translate(-50%, -50%) translateY(-20px);
   }
@@ -915,6 +918,7 @@ body.dark-mode {
     opacity: 0;
     transform: translateY(-40px) scale(0.9);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -1192,6 +1196,7 @@ body.dark-mode {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -1200,81 +1205,89 @@ body.dark-mode {
 /* ================================
    DARK MODE - Event Cards
 ================================ */
-body.dark-mode #events-container {
+[data-theme='dark'] #events-container {
   background: transparent;
 }
 
-body.dark-mode .event-card {
-  background: #0f172a;
+[data-theme='dark'] .event-card {
+  background: #121212;
   color: #e5e7eb;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+  border: 1px solid #1e293b;
 }
 
-body.dark-mode .event-card:hover,
-body.dark-mode .event-card:focus {
+[data-theme='dark'] .event-card:hover,
+[data-theme='dark'] .event-card:focus {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
 }
 
-body.dark-mode .event-title {
+[data-theme='dark'] .event-card.upcoming {
+  border-left-color: #475569;
+}
+
+[data-theme='dark'] .event-title {
   color: #f9fafb;
 }
 
-body.dark-mode .event-status.upcoming {
-  background: rgba(59, 130, 246, 0.15);
-  color: #93c5fd;
+[data-theme='dark'] .event-status.upcoming {
+  background: rgba(148, 163, 184, 0.1);
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.2);
 }
 
-body.dark-mode .event-status.today {
+[data-theme='dark'] .event-status.today {
   background: rgba(34, 197, 94, 0.15);
   color: #86efac;
 }
 
-body.dark-mode .event-status.ended {
+[data-theme='dark'] .event-status.ended {
   background: rgba(156, 163, 175, 0.15);
   color: #d1d5db;
 }
 
-body.dark-mode .event-meta {
+[data-theme='dark'] .event-meta {
   color: #cbd5f5;
 }
 
-body.dark-mode .meta-item {
+[data-theme='dark'] .meta-item {
   color: #cbd5f5;
 }
 
-body.dark-mode .meta-item i {
+[data-theme='dark'] .meta-item i {
   color: #94a3b8;
 }
 
-body.dark-mode .event-description {
+[data-theme='dark'] .event-description {
   color: #d1d5db;
 }
 
-body.dark-mode .btn-open-register {
+[data-theme='dark'] .btn-open-register {
   background: linear-gradient(135deg, #2563eb, #1e40af);
   color: #ffffff;
 }
 
-body.dark-mode .btn-open-register:hover {
+[data-theme='dark'] .btn-open-register:hover {
   background: linear-gradient(135deg, #1d4ed8, #1e3a8a);
 }
 
-body.dark-mode .btn-register.disabled {
-  background: #1f2933;
-  color: #9ca3af;
+[data-theme='dark'] .btn-register.disabled {
+  background: rgba(31, 41, 51, 0.4);
+  color: #64748b;
+  border: 1px solid #2d3748;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
-body.dark-mode .event-card.ended {
+[data-theme='dark'] .event-card.ended {
   opacity: 0.75;
 }
 
-body.dark-mode .no-events {
+[data-theme='dark'] .no-events {
   background: #020617;
   color: #e5e7eb;
 }
 
-body.dark-mode .no-events.error {
+[data-theme='dark'] .no-events.error {
   background: rgba(127, 29, 29, 0.25);
   color: #fecaca;
 }
@@ -1282,40 +1295,40 @@ body.dark-mode .no-events.error {
 /* ================================
    DARK MODE - Organize Section & Modal
 ================================ */
-body.dark-mode .organize-section {
+[data-theme='dark'] .organize-section {
   background: linear-gradient(180deg, var(--bg-primary) 0%, rgba(59, 130, 246, 0.05) 100%);
 }
 
-body.dark-mode .form-group select {
+[data-theme='dark'] .form-group select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23cbd5e1' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
 }
 
-body.dark-mode .form-group input[type='date']::-webkit-calendar-picker-indicator {
+[data-theme='dark'] .form-group input[type='date']::-webkit-calendar-picker-indicator {
   filter: invert(1);
 }
 
-body.dark-mode .event-views {
+[data-theme='dark'] .event-views {
   background: rgba(15, 23, 42, 0.9);
   color: #cbd5e1;
 }
 
-body.dark-mode .event-views:hover {
+[data-theme='dark'] .event-views:hover {
   color: #3b82f6;
 }
 
-body.dark-mode #register-modal {
+[data-theme='dark'] #register-modal {
   background: rgba(0, 0, 0, 0.92) !important;
 }
 
-body.dark-mode .modal-dialog {
+[data-theme='dark'] .modal-dialog {
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
 }
 
-body.dark-mode .modal-close {
+[data-theme='dark'] .modal-close {
   background: rgba(239, 68, 68, 0.1);
 }
 
-body.dark-mode .modal-close:hover {
+[data-theme='dark'] .modal-close:hover {
   background: rgba(239, 68, 68, 0.2);
 }
 
@@ -1422,8 +1435,6 @@ body.dark-mode .modal-close:hover {
   }
 }
 
-
-
 /* Ensure the containers don't touch edges on mobile */
 .events-container {
   width: 100%;
@@ -1441,11 +1452,13 @@ body.dark-mode .modal-close:hover {
 
   /* Adjust Section Headers */
   .section-header-terminal h2 {
-    font-size: 1.5rem; /* Smaller font for mobile */
+    font-size: 1.5rem;
+    /* Smaller font for mobile */
   }
-  
+
   /* Add spacing between Upcoming and Archive sections */
-  .container[style*="margin-top"] {
-    margin-top: 3rem !important; /* Reduce gap slightly on mobile */
+  .container[style*='margin-top'] {
+    margin-top: 3rem !important;
+    /* Reduce gap slightly on mobile */
   }
 }
