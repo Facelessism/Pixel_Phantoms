@@ -419,7 +419,7 @@ input:checked + .slider:before {
 
 /* --- CYBER CARD DESIGN --- */
 .cyber-card {
-  background: rgba(20, 20, 30, 0.6);
+  background: var(--card-bg, rgba(20, 20, 30, 0.6));
   border: 1px solid var(--border-color);
   border-radius: 4px;
   position: relative;
@@ -428,6 +428,14 @@ input:checked + .slider:before {
   backdrop-filter: blur(5px);
   display: flex;
   flex-direction: column;
+}
+
+/* Light Mode Overrides - High Specificity to beat style.css */
+[data-theme='light'] .cyber-card,
+body.light-mode .cyber-card {
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1) !important;
 }
 
 .cyber-card:hover {
@@ -610,12 +618,28 @@ input:checked + .slider:before {
   letter-spacing: -0.5px;
 }
 
+[data-theme='light'] .cyber-card h3,
+body.light-mode .cyber-card h3 {
+  color: #111827 !important;
+}
+
 .cyber-card p {
   color: var(--text-secondary);
   font-size: 0.9rem;
   line-height: 1.5;
   margin-bottom: 20px;
   flex-grow: 1;
+}
+
+[data-theme='light'] .cyber-card p,
+body.light-mode .cyber-card p {
+  color: #374151 !important;
+}
+
+[data-theme='light'] .project-id,
+body.light-mode .project-id {
+  color: #2563eb !important;
+  opacity: 1 !important;
 }
 
 /* Tech Stack Tags */
@@ -695,10 +719,17 @@ input:checked + .slider:before {
   margin: 20px 0;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  background: rgba(10, 10, 20, 0.8);
+  background: rgba(10, 10, 20, 0.9);
   overflow: hidden;
   font-family: 'JetBrains Mono', monospace;
   animation: slideInUp 0.5s ease-out;
+}
+
+[data-theme='light'] .code-snippet-container,
+body.light-mode .code-snippet-container {
+  background: #f8fafc !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05) !important;
 }
 
 @keyframes slideInUp {
@@ -722,6 +753,12 @@ input:checked + .slider:before {
   border-bottom: 1px solid var(--border-color);
 }
 
+[data-theme='light'] .code-header,
+body.light-mode .code-header {
+  background: rgba(0, 170, 255, 0.05) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.1) !important;
+}
+
 .code-language {
   font-size: 0.8rem;
   color: var(--accent-color);
@@ -743,6 +780,11 @@ input:checked + .slider:before {
   gap: 5px;
   transition: all 0.3s ease;
   font-family: 'JetBrains Mono', monospace;
+}
+
+[data-theme='light'] .copy-btn,
+body.light-mode .copy-btn {
+  color: #1f2937 !important;
 }
 
 .copy-btn:hover {
@@ -776,13 +818,25 @@ input:checked + .slider:before {
 .code-content {
   padding: 15px;
   overflow-x: auto;
-  max-height: 300px;
-  color: #e0f7ff;
-  font-size: 0.9rem;
+  max-height: 400px;
+  font-size: 0.85rem;
   line-height: 1.5;
+  color: #e2e8f0;
   tab-size: 2;
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+[data-theme='light'] .code-content,
+body.light-mode .code-content {
+  color: #334155 !important;
+  background: #ffffff !important;
+}
+
+.code-content code {
+  color: inherit;
+  background: transparent;
+  padding: 0;
 }
 
 /* Syntax highlighting for different languages */
@@ -891,13 +945,27 @@ input:checked + .slider:before {
 .search-box input {
   width: 100%;
   padding: 12px 40px 12px 15px;
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.2);
   border: 1px solid var(--border-color);
   border-radius: 6px;
   color: var(--text-primary);
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.9rem;
   transition: all 0.3s ease;
+}
+
+[data-theme='light'] .search-box input,
+body.light-mode .search-box input {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme='light'] .search-box input,
+body.light-mode .search-box input {
+  background: #f3f4f6 !important;
+  color: #1f2937 !important;
+  border-color: #d1d5db !important;
 }
 
 .search-box input:focus {
@@ -1078,6 +1146,11 @@ input:checked + .slider:before {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   border: 1px solid var(--border-color);
+}
+
+[data-theme='light'] .filter-results,
+body.light-mode .filter-results {
+  background: rgba(0, 0, 0, 0.03) !important;
 }
 
 .results-count {
