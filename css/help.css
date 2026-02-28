@@ -317,25 +317,17 @@
   line-height: 1.5;
 }
 
-/* === HELP PAGE HORIZONTAL SCROLL CONTAINER === */
+/* =========================================
+   SUPPORT TEAM GRID LAYOUT
+========================================= */
 
-.horizontal-container {
-  display: flex;
-  flex-wrap: nowrap;
-  width: fit-content;
-  height: 100%;
-}
-
-.team-panel {
-  width: 100vw;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 160px 20px 20px;
-  box-sizing: border-box;
-  flex-shrink: 0;
-  position: relative;
+.team-grid {
+  max-width: 1200px;
+  margin: 60px auto 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Desktop 2x2 */
+  gap: 40px;
+  align-items: stretch; /* Equal height */
 }
 
 /* Card + badge styling reused inside horizontal panels */
@@ -372,7 +364,7 @@
 }
 
 .team-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-12px);
   border-color: var(--accent-color);
   box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.15),
@@ -422,13 +414,6 @@
   color: var(--accent-color);
   transition: all var(--transition-speed) ease;
 }
-
-.team-card:hover{
-  border-color: var(--accent-color);
-  transform: scale(1.1) rotate(5deg);
-}
-
-
 
 /* Default icon colors */
 [data-theme='light'] .team-avatar i {
