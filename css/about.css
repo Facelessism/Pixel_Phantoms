@@ -915,3 +915,17 @@ body.light-mode .motto-subtitle {
   margin: 0 auto;
   padding: 0 24px;
 }
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  transition: all 0.4s ease;
+}
+
+.stat-glow {
+  color: var(--accent-color);
+  text-shadow:
+    0 0 8px var(--accent-color),
+    0 0 20px rgba(0, 170, 255, 0.5);
+}
