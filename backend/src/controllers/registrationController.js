@@ -1,14 +1,12 @@
 const { validationResult } = require('express-validator');
 const sequelize = require('../config/database');
+const { Sequelize } = require('sequelize');
 const User = require('../models/User');
 const Event = require('../models/Event');
 const Registration = require('../models/Registration');
 const { sendRegistrationEmail } = require('../services/emailService');
 const fs = require('fs');
 const path = require('path');
-
-// Load events data
-const eventsData = JSON.parse(fs.readFileSync(path.join(__dirname, '../../../data/events.json'), 'utf8'));
 
 const register = async (req, res, next) => {
     const errors = validationResult(req);
@@ -17,9 +15,38 @@ const register = async (req, res, next) => {
     }
 
     const { firstName, lastName, email, age, eventTitle } = req.body;
-    const transaction = await sequelize.transaction();
+
+    let transaction;
 
     try {
+        transaction = await sequelize.transaction({
+            isolationLevel: Sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE
+        });
+
+        // Load events data
+        const eventsData = JSON.parse(
+            fs.readFileSync(path.join(__dirname, '../../../data/events.json'), 'utf8')
+        );
+
+        const eventData = eventsData.find(e => e.title === eventTitle);
+
+        if (!eventData) {
+            await transaction.rollback();
+            return res.status(400).json({
+                status: 'error',
+                message: 'Invalid event selected.'
+            });
+        }
+
+        const parsedDate = eventData.countdownDate ? new Date(eventData.countdownDate) : null;
+        if (!parsedDate || isNaN(parsedDate)) {
+            await transaction.rollback();
+            return res.status(400).json({
+                status: 'error',
+                message: 'Event date is invalid.'
+            });
+        }
+
         // 1. Find or create user
         const [user] = await User.findOrCreate({
             where: { email },
@@ -27,55 +54,28 @@ const register = async (req, res, next) => {
             transaction
         });
 
-        // 2. Find event
-        let event = await Event.findOne({ where: { title: eventTitle }, transaction });
-
-        // Get event data from JSON
-        const eventData = eventsData.find(e => e.title === eventTitle);
-
-        // If event doesn't exist in DB, create it
-        if (!event) {
-            if (eventData) {
-                event = await Event.create({
-                    title: eventTitle,
-                    date: new Date(eventData.countdownDate),
-                    location: eventData.location,
-                    capacity: 100
-                }, { transaction });
-            } else {
-                // Fallback to placeholder if not found in JSON
-                event = await Event.create({
-                    title: eventTitle,
-                    date: new Date(),
-                    location: 'To be announced',
-                    capacity: 100
-                }, { transaction });
-            }
-        } else {
-            // If event exists but we have JSON data, update it to ensure correct date/location
-            if (eventData) {
-                await event.update({
-                    date: new Date(eventData.countdownDate),
-                    location: eventData.location
-                }, { transaction });
-            }
-        }
-
-        // 3. Check if already registered
-        const existingRegistration = await Registration.findOne({
-            where: { UserId: user.id, EventId: event.id },
-            transaction
+        // 2. Find event with row-level lock
+        let event = await Event.findOne({
+            where: { title: eventTitle },
+            transaction,
+            lock: transaction.LOCK.UPDATE
         });
 
-        if (existingRegistration) {
-            await transaction.rollback();
-            return res.status(400).json({
-                status: 'error',
-                message: 'You are already registered for this event.'
-            });
+        if (!event) {
+            event = await Event.create({
+                title: eventTitle,
+                date: parsedDate,
+                location: eventData.location,
+                capacity: eventData.capacity || 100
+            }, { transaction });
+        } else {
+            await event.update({
+                date: parsedDate,
+                location: eventData.location
+            }, { transaction });
         }
 
-        // 4. Check capacity
+        // 3. Check capacity atomically (row locked)
         if (event.registeredCount >= event.capacity) {
             await transaction.rollback();
             return res.status(400).json({
@@ -84,19 +84,33 @@ const register = async (req, res, next) => {
             });
         }
 
-        // 5. Create registration
-        const registration = await Registration.create({
-            UserId: user.id,
-            EventId: event.id
-        }, { transaction });
+        // 4. Create registration (DB must enforce unique constraint on UserId + EventId)
+        let registration;
+        try {
+            registration = await Registration.create({
+                UserId: user.id,
+                EventId: event.id
+            }, { transaction });
+        } catch (err) {
+            if (err.name === 'SequelizeUniqueConstraintError') {
+                await transaction.rollback();
+                return res.status(400).json({
+                    status: 'error',
+                    message: 'You are already registered for this event.'
+                });
+            }
+            throw err;
+        }
 
-        // 6. Update event registeredCount
+        // 5. Update event registeredCount atomically
         await event.increment('registeredCount', { by: 1, transaction });
 
         await transaction.commit();
 
-        // 7. Send confirmation email (async, don't block response)
-        sendRegistrationEmail(user, event).catch(err => console.error('Email failed:', err));
+        // 6. Send confirmation email (async, don't block response)
+        sendRegistrationEmail(user, event).catch(err =>
+            console.error('Email failed:', err)
+        );
 
         res.status(201).json({
             status: 'success',
@@ -105,7 +119,7 @@ const register = async (req, res, next) => {
         });
 
     } catch (error) {
-        await transaction.rollback();
+        if (transaction) await transaction.rollback();
         next(error);
     }
 };
